@@ -9,18 +9,19 @@ import json
 
 
 def welcome(request):
-    mooc_courses = MoocCourse.objects.all()
-    school_courses = SchoolCourse.objects.all()
-    folders = Folder.objects.filter(parent_id=1, id__gt=1)  # We remove the root folder
-    folder_free_sheets = Sheet.objects.filter(folder=1) # sheets libre de tout dossier
-    free_sheets = [sheet for sheet in folder_free_sheets if
-                   not hasattr(sheet, 'item')]  # sheets libre de tout dossier ET non Item
-    return render(request, 'pages/welcome.html', {
-        'mooc_courses': mooc_courses,
-        'school_courses': school_courses,
-        'folders': folders,
-        'free_sheets': free_sheets,
-    })
+    return view_folder(request,1)
+    # mooc_courses = MoocCourse.objects.all()
+    # school_courses = SchoolCourse.objects.all()
+    # folders = Folder.objects.filter(parent_id=1, id__gt=1)  # We remove the root folder
+    # folder_free_sheets = Sheet.objects.filter(folder=1) # sheets libre de tout dossier
+    # free_sheets = [sheet for sheet in folder_free_sheets if
+    #                not hasattr(sheet, 'item')]  # sheets libre de tout dossier ET non Item
+    # return render(request, 'pages/welcome.html', {
+    #     'mooc_courses': mooc_courses,
+    #     'school_courses': school_courses,
+    #     'folders': folders,
+    #     'free_sheets': free_sheets,
+    # })
 
 
 def view_mooc_course(request, id):
@@ -64,8 +65,6 @@ def school_course_item_reach(request, school_course_id, item_sequence):
 
 
 def view_folder(request, id):
-    if id == 1:
-        return welcome(request)
     sheets = Sheet.objects.filter(folder=id)
     file_items = FileItem.objects.filter(folder=id)
     folder = Folder.objects.get(pk=id)
@@ -73,8 +72,6 @@ def view_folder(request, id):
 
 
 def view_folder_editor(request, id, sheet_id):
-    if id == 1:
-        return welcome(request)
     active_sheet = Sheet.objects.get(pk=sheet_id)
     sheets = Sheet.objects.filter(folder=id)
     folder = Folder.objects.get(pk=id)

@@ -11,9 +11,11 @@
             {% include 'includes/components/modals/add_folder_file.html' with folder_id=folder.id %}
             <div class="col-12">
                 <h1 class="text-center text-uppercase mb-4"> {{ folder.name }}
-                    <a href="{% url 'folder' folder.parent.id %}" class="float-left">
-                        ../ <i class="fa fa-arrow-left"></i>
-                    </a>
+                    {% if folder.id != 1 %}
+                        <a href="{% url 'folder' folder.parent.id %}" class="float-left">
+                            ../ <i class="fa fa-arrow-left"></i>
+                        </a>
+                    {% endif %}
                     {% if sheets.count %}
                         <a href="{% url 'folder-editor' folder.id sheets.first.id %}"
                            class="float-right badge " class="ml-2"> <i class="fa fa-bars"></i></a>
@@ -30,14 +32,20 @@
         <div class="folder-container  row">
             <div class="col-12">
                 <h1> Dossiers
-                    <small>({{ folder.folder_set.all.count|default:0 }})</small>
+                    {% if folder.id == 1 %}
+                        <small>({{ folder.folder_set.all.count|add:-1|default:0 }})</small>
+                    {% else %}
+                        <small>({{ folder.folder_set.all.count|default:0 }})</small>
+                    {% endif %}
                 </h1>
             </div>
 
             {% for sub_folder in  folder.folder_set.all %}
+                {% if sub_folder.id != 1 %}
                 <div class="col-lg-2 col-md-3">
                     {% include 'includes/components/tiny/folder_tiny.html' with folder=sub_folder %}
                 </div>
+                {% endif %}
             {% endfor %}
         </div>
         <hr>
