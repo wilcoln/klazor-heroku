@@ -1,0 +1,10 @@
+[
+  {
+    "model": "klazor.folder",
+    "pk": 1,
+    "fields": {
+      "name": "Root",
+      "parent_id": 1
+    }
+  }
+]

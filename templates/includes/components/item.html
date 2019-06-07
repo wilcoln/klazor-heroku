@@ -1,0 +1,8 @@
+{% include 'includes/components/sheet.html' with sheet=item %}
+<form action="{% url 'check-item' item.id %}" method="post">
+    {% csrf_token %}
+    <button class="float-right my-3 btn {% if item.completed %} {{ ' btn-secondary ' }} {% else %} {{ ' btn-info ' }}{% endif %}">
+        {% if not item.completed %} <i class="fa fa-check"></i>
+            {{ 'Mark as completed' }} {% else %} <i class="fa fa-undo"></i>
+            {{ ' Unmark as completed ' }}{% endif %}</button>
+</form>

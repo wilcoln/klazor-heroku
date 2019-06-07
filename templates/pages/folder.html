@@ -1,0 +1,74 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %} {{ folder.name }} {% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/tiny.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% include 'includes/components/modals/create_folder.html' with parent_id=folder.id %}
+            {% include 'includes/components/modals/add_folder_file.html' with folder_id=folder.id %}
+            <div class="col-12">
+                <h1 class="text-center text-uppercase mb-4"> {{ folder.name }}
+                    <a href="{% url 'folder' folder.parent.id %}" class="float-left">
+                        ../ <i class="fa fa-arrow-left"></i>
+                    </a>
+                    {% if sheets.count %}
+                        <a href="{% url 'folder-editor' folder.id sheets.first.id %}"
+                           class="float-right badge " class="ml-2"> <i class="fa fa-bars"></i></a>
+                    {% endif %}
+                    <button type="button" class="btn float-right badge badge-secondary" data-toggle="modal"
+                            data-target="#addFileModal"><i class="fa fa-plus"></i></button>
+                    <a href="{% url 'new-folder-sheet' folder.id %}" class="float-right badge badge-success mx-2"> <i
+                            class="fa fa-plus"></i></a>
+                    <button type="button" class="btn float-right badge badge-primary" data-toggle="modal"
+                            data-target="#exampleModalCenter"><i class="fa fa-plus"></i></button>
+                </h1>
+            </div>
+        </div>
+        <div class="folder-container  row">
+            <div class="col-12">
+                <h1> Dossiers
+                    <small>({{ folder.folder_set.all.count|default:0 }})</small>
+                </h1>
+            </div>
+
+            {% for sub_folder in  folder.folder_set.all %}
+                <div class="col-lg-2 col-md-3">
+                    {% include 'includes/components/tiny/folder_tiny.html' with folder=sub_folder %}
+                </div>
+            {% endfor %}
+        </div>
+        <hr>
+        <div class="sheet-container  row">
+            <div class="col-12">
+                <h1> Feuilles
+                    <small>({{ sheets.count|default:0 }})</small>
+            </div>
+            {% for sheet in sheets %}
+                <div class="col-lg-2 col-md-3">
+                    {% include 'includes/components/tiny/sheet_tiny.html' %}
+                </div>
+            {% endfor %}
+        </div>
+        <hr>
+        <div class="sheet-container  row">
+            <div class="col-12">
+                <h1> Fichiers
+                    <small>({{ file_items.count|default:0 }})</small>
+                </h1>
+            </div>
+            {% for file_item in file_items %}
+                <div class="col-lg-3 col-md-4">
+                    {% include 'includes/components/tiny/file_tiny.html' with file_item=file_item %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'js-cookie/src/js.cookie.js' %}"></script>
+    <script src="{% static 'axios/dist/axios.min.js' %}"></script>
+    <script src="{% static 'js/tiny.js' %}"></script>
+{% endblock %}

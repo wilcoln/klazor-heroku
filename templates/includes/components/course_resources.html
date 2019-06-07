@@ -1,0 +1,12 @@
+<section>
+    <h2 class="text-muted">Ressources liées au cours </h2><br>
+    <ul>
+        {% for resource in resources %}
+            {% if resource.fileresource %}
+                <li><a href="{{ resource.fileresource.file.url }}">{{ resource.fileresource.title }}</a></li>
+            {% elif content.linkresource %}
+                <li><a href="{{ resource.fileresource.link }}">{{ resource.linkresource.title }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</section>

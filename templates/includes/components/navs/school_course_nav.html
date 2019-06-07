@@ -1,0 +1,9 @@
+      <!-- menu -->
+      <div id="CourseMenu">
+        <div class="list-group">
+          <a href="{% url 'school-course' school_course.id %}" class="list-group-item list-group-item-primary rounded-0">{{ school_course.title }}</a>
+          {% for item in school_course.item_set.all %}
+              <a href="{% url 'school-course-item' item.id %}" class="w-100 list-group-item list-group-item-secondary rounded-0">{{ forloop.counter }}. {{ item.title|truncatechars:30}}{% if item.completed %} <i class="float-right fa fa-check-circle text-success"></i> {% endif %}</a>
+          {% endfor %}
+        </div>
+      </div>

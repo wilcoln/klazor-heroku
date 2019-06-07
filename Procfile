@@ -1,0 +1,1 @@
+web: gunicorn klazor.wsgi --log-file -

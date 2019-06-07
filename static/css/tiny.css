@@ -1,0 +1,51 @@
+
+.tiny.card i.fa {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    font-size: 2rem;
+    color: rgba(18, 94, 240, .2);
+}
+
+.tiny.card .fa.fa-trash {
+    border: none;
+    background: transparent;
+    transition: all .2s;
+    position: absolute;
+    bottom: .5rem;
+    right: .5rem;
+    font-size: 2rem;
+    color: rgba(255, 0, 0, .1);
+    display: none;
+}
+
+.tiny.card .fa.fa-trash:hover {
+    color: rgba(255, 0, 0, .4);
+}
+
+.tiny .folder-name, .tiny .sheet-title {
+    text-overflow: ellipsis;
+    width: 97px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-transform: capitalize;
+}
+
+.tiny .filename {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 90%;
+}
+
+.tiny .course-title {
+    text-overflow: ellipsis;
+    width: 270px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-transform: capitalize;
+}
+
+.tiny {
+    background-color: #fdfdfd;
+}

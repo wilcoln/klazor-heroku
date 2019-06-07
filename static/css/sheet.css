@@ -1,0 +1,246 @@
+@font-face {
+  font-family: 'Source Code Pro';
+  src: url("/static/font/source-code-pro.ttf");
+}
+
+.sheet-component{
+    border: 1px solid whitesmoke;
+    background-color: white;
+    padding: 2rem 2rem;
+    box-shadow: 0 0 1rem rgba(0,0,0,.1);
+    border-radius: 5px;
+}
+.sheet-component .markdown-display{
+    min-height: 3px;
+}
+.sheet-component .sheet-title{
+    color: black;
+}
+.sheet-component h1{
+    color: black;
+}
+.sheet-component h2{
+    color: #252525;
+}
+.sheet-component h3{
+    color: #505050;
+}
+.sheet-component pre{
+    background: #f5f5f5 !important;
+    padding: .4rem .5rem;
+}
+.sheet.toolbar{
+    position: relative;
+    right: 1rem;
+    top: .5rem;
+}
+.sheet.toolbar .btn-group i.fa.fa-plus, .btn-clear i.fa.fa-warning{
+    transform: translateY(9px) translateX(9px);
+}
+.sheet.toolbar .btn-group i{
+    font-size: 1.1rem;
+    color: grey;
+}
+.sheet.toolbar .btn-group button, .btn-clear, .btn-save{
+    all: unset;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border:none;
+}
+.sheet.toolbar .btn-group button:hover{
+    transform: scale(1.1);
+}
+.sheet.toolbar .btn-group button:hover i{
+    color: #007bff;
+}
+.sheet.toolbar .btn-group i + i, .btn-clear i + i, .btn-save i{
+    font-size: 1.5rem;
+}
+.sheet.toolbar .mode{
+    display: inline-block;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    height: 100%;
+}
+.sheet.toolbar .mode i{
+    font-size: 1.8rem;
+    transform: translateY(2px);
+}
+.sheet.toolbar .mode i.fa-edit{
+    color: #007bff;
+}
+.sheet.toolbar .mode i.fa-eye{
+    color: #bbb;
+}
+.sheet.toolbar .separator{
+    display: inline-block;
+    width: 1px;
+    height: 25px;
+    background-color: lightgrey;
+}
+.sheet.toolbar .btn-clear{
+    position: absolute;
+    right: 80px;
+    color: grey;
+}
+.sheet.toolbar .btn-save{
+    position: absolute;
+    right: 0px;
+    color: grey;
+}
+.sheet.toolbar .btn-save:hover{
+    color: #007bff;
+}
+.sheet.toolbar .btn-clear:hover{
+    color: #dc3545;
+}
+.sheet-component h1 > input{
+    display: inline-block;
+    width: 100%;
+    padding: .2rem;
+}
+figure{
+    width: 100%;
+}
+figure input{
+     display: inline-block;
+}
+textarea{
+    width: 100%;
+    min-height: 5rem;
+    padding: .4rem;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 100%;
+}
+p{
+    text-align: justify;
+}
+.col-1 .fa.fa-trash{
+    font-size: 1.5rem;
+    color: #dc3545;
+}
+
+/* Switch styles */
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  transform: scale(.8) translateY(-5px);
+    align-self: center;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #bbb;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #007bff;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #007bff;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Simple table style */
+table {
+  border-collapse: collapse;
+  margin: auto auto 1rem;
+}
+ th {
+  background: #ccc;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background: #efefef;
+}
+
+tr:hover {
+  background: #d1d1d1;
+}
+/**sheet component font size*/
+.sheet-component .row{
+    font-size: 105%;
+}
+
+.alert.alert-dismissible{
+    text-align: center;
+    border-radius: 0px;
+}
+.scale-input{
+    width: 50px;
+}
+.alert{
+    display: none;
+}
+.edit-menu{
+    display: none;
+}
+.CodeMirror{
+    height: fit-content;
+    border: 1px solid #ccc;
+}
+input{
+    border: 1px solid #ccc;
+}
+.content-editable{
+    margin-bottom: .5rem;
+    border: 1px solid transparent;
+    border-right-width: 5px;
+    padding: .5rem;
+}
+.content-editable:hover{
+    border-color: rgba(0,125, 255, .4);
+}
+.content-edit-menu i{
+    font-size: 1.6rem;
+}
