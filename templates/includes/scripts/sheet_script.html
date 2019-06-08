@@ -55,6 +55,17 @@
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub, this.$el.querySelector('.markdown-display')]);
                 }
             },
+            flushText: function(){
+                this.content.text = this.codeMirror.getValue('\n')
+            },
+            editorCtrlS: function () {
+                this.flushText()
+                this.$emit('save')
+            },
+            editorCtrlEnter: function () {
+                this.flushText()
+                this.toggleMode()
+            },
             mountCodeMirror: function () {
                 let markdownComponent = this
                 this.codeMirror = CodeMirror.fromTextArea(this.$el.getElementsByTagName('textarea')[0], {
@@ -62,20 +73,10 @@
                         "Ctrl-S": markdownComponent.editorCtrlS,
                         "Ctrl-Enter": markdownComponent.editorCtrlEnter
                     },
-                    autoRefresh: true
+                    autoRefresh: true,
                 })
-            },
-            editorCtrlS: function () {
-                this.content.text = this.codeMirror.getValue('\n')
-                this.$emit('save')
-            },
-            editorCtrlEnter: function () {
-                this.content.text = this.codeMirror.getValue('\n')
-                this.toggleMode()
+                this.codeMirror.on("blur", markdownComponent.flushText)
             }
-        },
-        mounted: function () {
-            this.mountCodeMirror()
         },
     })
 
