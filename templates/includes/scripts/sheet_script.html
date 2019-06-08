@@ -78,6 +78,9 @@
                 this.codeMirror.on("blur", markdownComponent.flushText)
             }
         },
+        mounted: function () {
+            this.mountCodeMirror()
+        },
     })
 
     Vue.component('video-content', {
