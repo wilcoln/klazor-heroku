@@ -1,4 +1,4 @@
-<div class="container sheet-toolbar d-flex align-items-center">
+<div class="container sheet toolbar d-flex align-items-center">
     <!-- Rounded switch -->
     <label class="switch mr-3">
         <input type="checkbox" v-on:click="toggleMode">
@@ -14,8 +14,8 @@
             <button v-on:click="addMarkdownContent"><i class="fa fa-plus"></i> <i class="fa fa-file-text-o"></i>
             </button>
         </div>
-        <button class="btn-save mr-3" v-on:click="saveSheet"><i class="fa fa-save"></i> Save</button>
-        <button class="btn-clear mr-3 " v-on:click="clearSheet"><i class="fa fa-warning"></i> <i class="fa fa-eraser"></i> Clear</button>
+        <button class="btn-save" v-on:click="saveSheet"><i class="fa fa-save"></i> Save</button>
+        <button class="btn-clear" v-on:click="clearSheet"><i class="fa fa-warning"></i> <i class="fa fa-eraser"></i> Clear</button>
     </div>
 
 </div>

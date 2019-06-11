@@ -180,13 +180,15 @@ def new_folder(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
-def add_folder_file(request):
-    file_item = FileItem()
+def add_folder_files(request):
     folder_id = request.POST['folder-id']
     folder = Folder.objects.get(pk=folder_id)
-    file_item.folder = folder
-    file_item.file = request.FILES['file']
-    file_item.save()
+    files = request.FILES.getlist('files')
+    for file in files:
+        file_item = FileItem()
+        file_item.folder = folder
+        file_item.file = file
+        file_item.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 

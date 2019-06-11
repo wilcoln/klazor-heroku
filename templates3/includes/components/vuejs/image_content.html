@@ -1,0 +1,28 @@
+<template id="image-content">
+     <div class="row content-editable" v-if="editable && content.editMode">
+       <div class="col-11">
+            <figure class="figure text-center">
+                <img v-bind:src="content.image" v-bind:width="content.scale*100 + '%'"
+                 v-bind:alt="content.title">
+                <div class="mb-2 justify-content-around w-100">
+                    <input v-bind:id="'input-' + content.id" type="file" v-on:change="updateImage">
+                    <label v-bind:for="'scale-input' + content.id">Scale : </label><input  class="scale-input" v-bind:id="'image-scale-input' + content.id" type="number" step="0.1" max="1" v-model="content.scale">
+                </div>
+            <figcaption
+                    class="figure-caption text-center">
+                <label>Title : </label> <input v-on:keydown.ctrl.enter="toggleMode" v-model="content.title" type="text">
+            </figcaption>
+        </figure>
+       </div>
+         {% include 'includes/components/menus/content_edit_menu.html' %}
+    </div>
+    <div v-else v-on:dblclick="toggleMode" class="d-flex justify-content-center">
+        <figure class="figure text-center">
+            <img v-bind:src="content.image" v-bind:width="content.scale*100 + '%'"
+                 v-bind:alt="content.title">
+            <figcaption
+                    class="figure-caption text-center" v-text="content.title">
+            </figcaption>
+        </figure>
+    </div>
+</template>

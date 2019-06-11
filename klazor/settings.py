@@ -36,7 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'klazor'
+    'klazor',
+    'rest_framework',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -65,7 +67,7 @@ TEMPLATES = [
             ],
             'libraries': {
                 'filename': 'klazor.templatetags.filename',
-                'iconify':  'klazor.templatetags.iconify',
+                'iconclass':  'klazor.templatetags.iconclass',
 
             }
         },

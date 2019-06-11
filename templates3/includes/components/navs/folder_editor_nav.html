@@ -1,7 +1,7 @@
 {%  load filename %}
-{%  load iconclass %}
+{%  load iconify %}
 <!-- menu -->
-<div id="folder-nav" class="p-2">
+<div id="folderNav" class="p-2">
     <div>
         <a href="{% url 'folder' folder.parent.id %}" class="text-center">
             <strong>../</strong><i class="text-primary fa fa-arrow-left"></i>
@@ -32,11 +32,13 @@
             </div>
         {% endfor %}
         {% for sub_folder in folder.folder_set.all %}
-            <div>
-                <a href="{% url 'folder' sub_folder.id %}">
-                    <i class="text-primary fa fa-folder"></i> {{ sub_folder.name | truncatechars:40 }}
-                </a>
-            </div>
+            {% if sub_folder.id != 1 %}
+                <div>
+                    <a href="{% url 'folder' sub_folder.id %}">
+                        <i class="text-primary fa fa-folder"></i> {{ sub_folder.name | truncatechars:40 }}
+                    </a>
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
 

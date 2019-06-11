@@ -1,0 +1,33 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %} {{ school_course.title }} {% endblock %}
+{% block style %} <link rel="stylesheet" href="{% static 'css/course.css' %}"> {% endblock %}
+{% block content %}
+    <div class="base-container">
+        <div class="row">
+            <div class="col-md-3">
+                {% include 'includes/components/navs/school_course_nav.html' with school_course=school_course %}
+            </div>
+            <div class="col-md-9">
+                <h1 class="text-center">{{ school_course.title }}</h1>
+                <hr>
+                <div class="container">
+                    <section>
+                        <h2 class="text-muted">Contenu du cours </h2><br>
+                        {% for item in school_course.item_set.all %}
+                            <a href="{% url 'school-course-item' item.id %}">
+                                <div class="row">
+                                    <h3 class="col-md-12">{{ forloop.counter }}. {{ item.title }} {% if item.completed %} <i class="fa fa-check-circle text-success"></i> {% endif %} </h3>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </section>
+                    <hr>
+                    {% include 'includes/components/course_resources.html' with resources=school_course.resource_set.all %}
+                    <hr>
+                    {% include 'includes/components/course_instructors.html' with instructors=school_course.instructor_set.all %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

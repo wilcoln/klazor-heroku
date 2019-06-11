@@ -10,6 +10,9 @@
     box-shadow: 0 0 1rem rgba(0,0,0,.1);
     border-radius: 5px;
 }
+.editable .sheet-component{
+    margin-bottom: 85vh;
+}
 .sheet-component .markdown-display{
     min-height: 3px;
 }
@@ -25,73 +28,73 @@
 .sheet-component h3{
     color: #505050;
 }
-.sheet-component pre{
-    background: #f5f5f5 !important;
-    padding: .4rem .5rem;
+.sheet-toolbar{
+    position: sticky;
+    top: .6rem;
+    z-index: 1021;
+    background: transparent;
+    padding-top: .8rem;
+    border-radius: 10px;
+
 }
-.sheet.toolbar{
-    position: relative;
-    right: 1rem;
-    top: .5rem;
-}
-.sheet.toolbar .btn-group i.fa.fa-plus, .btn-clear i.fa.fa-warning{
+.sheet-toolbar .btn-group i.fa.fa-plus, .btn-clear i.fa.fa-warning{
     transform: translateY(9px) translateX(9px);
 }
-.sheet.toolbar .btn-group i{
+.sheet-toolbar .btn-group i{
     font-size: 1.1rem;
     color: grey;
 }
-.sheet.toolbar .btn-group button, .btn-clear, .btn-save{
+.sheet-toolbar .btn-group button, .btn-clear, .btn-save{
     all: unset;
-    margin-bottom: 1rem;
+    margin-bottom: .8rem;
     background-color: transparent;
     border:none;
 }
-.sheet.toolbar .btn-group button:hover{
+.sheet-toolbar .btn-group button:hover{
     transform: scale(1.1);
 }
-.sheet.toolbar .btn-group button:hover i{
+.sheet-toolbar .btn-group button:hover i{
     color: #007bff;
 }
-.sheet.toolbar .btn-group i + i, .btn-clear i + i, .btn-save i{
+.sheet-toolbar .btn-group i + i, .btn-clear i + i, .btn-save i{
     font-size: 1.5rem;
 }
-.sheet.toolbar .mode{
+.sheet-toolbar .mode{
     display: inline-block;
     margin-right: 1rem;
     margin-bottom: 1rem;
     height: 100%;
 }
-.sheet.toolbar .mode i{
+.sheet-toolbar .mode i{
     font-size: 1.8rem;
     transform: translateY(2px);
 }
-.sheet.toolbar .mode i.fa-edit{
+.sheet-toolbar .mode i.fa-edit{
     color: #007bff;
 }
-.sheet.toolbar .mode i.fa-eye{
+.sheet-toolbar .mode i.fa-eye{
     color: #bbb;
 }
-.sheet.toolbar .separator{
+.sheet-toolbar .separator{
     display: inline-block;
     width: 1px;
     height: 25px;
     background-color: lightgrey;
 }
-.sheet.toolbar .btn-clear{
+.sheet-toolbar .btn-clear{
     position: absolute;
     right: 80px;
     color: grey;
 }
-.sheet.toolbar .btn-save{
+.sheet-toolbar .btn-save{
     position: absolute;
     right: 0px;
     color: grey;
 }
-.sheet.toolbar .btn-save:hover{
+.sheet-toolbar .btn-save:hover{
     color: #007bff;
 }
-.sheet.toolbar .btn-clear:hover{
+.sheet-toolbar .btn-clear:hover{
     color: #dc3545;
 }
 .sheet-component h1 > input{
@@ -225,10 +228,16 @@ tr:hover {
 .edit-menu{
     display: none;
 }
+/**
+ * Code mirror editor custom style
+ */
 .CodeMirror{
     height: fit-content;
     border: 1px solid #ccc;
+    background: #f5f5f5;
 }
+/** End **/
+
 input{
     border: 1px solid #ccc;
 }

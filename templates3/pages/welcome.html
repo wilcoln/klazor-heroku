@@ -7,7 +7,7 @@
 {% block title %} Welcome {% endblock %}
 {% block content %}
     <div class="container">
-        <div class="row">
+<!--         <div class="row">
             <div class="col-12">
                 <h1> Cours disponibles
                     <small>({{ mooc_courses.all.count|add:school_courses.all.count }})</small>
@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr -->
         <div class="folder-container  row">
             {% include 'includes/components/modals/create_folder.html' with parent_id=1 %}
             <div class="col-12">
