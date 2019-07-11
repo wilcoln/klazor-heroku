@@ -4,7 +4,7 @@
         <a href="{% url 'sheet' sheet.id %}">
             <div class="sheet-title">{{ sheet.title }}</div>
         </a>
-        <small class="text-muted ">{{ sheet.content_set.all.count }} contents</small>
+        <small class="text-muted ">{{ sheet.cell_set.all.count }} cells</small>
         <form action="{% url 'delete-sheet' sheet.id %}" method="post">
             {%  csrf_token %}
             <button role="submit" class="fa fa-trash"></button>

@@ -3,6 +3,11 @@
   src: url("/static/font/source-code-pro.ttf");
 }
 
+@media print {
+    .sheet-toolbar, .sheet-toolbar *{
+        display:none !important;
+    }
+}
 .sheet-component{
     border: 1px solid whitesmoke;
     background-color: white;
@@ -156,7 +161,7 @@ p{
 
 .slider:before {
   position: absolute;
-  content: "";
+ content: "";
   height: 26px;
   width: 26px;
   left: 4px;
@@ -241,15 +246,15 @@ tr:hover {
 input{
     border: 1px solid #ccc;
 }
-.content-editable{
+.cell-editable{
     margin-bottom: .5rem;
     border: 1px solid transparent;
     border-right-width: 5px;
     padding: .5rem;
 }
-.content-editable:hover{
+.cell-editable:hover{
     border-color: rgba(0,125, 255, .4);
 }
-.content-edit-menu i{
+.cell-edit-menu i{
     font-size: 1.6rem;
 }

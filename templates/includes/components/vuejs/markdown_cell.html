@@ -1,0 +1,12 @@
+<template id="markdown-cell">
+    <div>
+        <div class="cell-editable row" v-show="editable && cell.editMode">
+            <div class="col-11">
+                <textarea v-text="cell.text"></textarea>
+            </div>
+            {% include 'includes/components/menus/cell_edit_menu.html' %}
+        </div>
+        <div class="markdown-display" v-show="!editable || !cell.editMode" v-on:dblclick="toggleMode"
+             v-html="html"></div>
+    </div>
+</template>

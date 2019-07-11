@@ -27,7 +27,7 @@
         {% for file_item in file_items %}
             <div>
                 <a href="{{ file_item.file.url }}">
-                    <i class="text-primary fa {{ file_item.file.name|iconify }}"></i> {{ file_item.file|filename }}
+                    <i class="text-primary fa {{ file_item.file.name|iconclass }}"></i> {{ file_item.file|filename }}
                 </a>
             </div>
         {% endfor %}

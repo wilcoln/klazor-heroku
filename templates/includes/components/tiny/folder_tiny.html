@@ -1,4 +1,4 @@
-<div onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)" class="tiny card folder mb-3">
+<div onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)" class="tiny card folder mb-3" oncontextmenu="openFolderContextMenu(event, {{ folder.id }})">
     <i class="fa fa-folder"></i>
     <div class="card-body">
         <a href="{% url 'folder' folder.id %}">
@@ -11,3 +11,5 @@
         </form>
     </div>
 </div>
+{% include 'includes/components/menus/contextmenus/folder_contextmenu.html' with folder=folder %}
+{% include 'includes/components/modals/rename_folder.html' with folder=folder %}

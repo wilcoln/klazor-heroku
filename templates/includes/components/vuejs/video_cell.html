@@ -1,0 +1,30 @@
+<template id="video-cell">
+    <div class="row cell-editable" v-if="editable && cell.editMode">
+        <div class="col-11">
+            <figure class="figure text-center">
+                <video v-bind:width="cell.scale*100 + '%'" controls>
+                    <source v-bind:src="cell.video" type="video/mp4">
+                </video>
+                <div class="mb-2 justify-cell-around w-100">
+                    <input v-bind:id="'input-' + cell.id" type="file" v-on:change="updateVideo">
+                    <label v-bind:for="'scale-input' + cell.id">Scale : </label><input class="scale-input" v-bind:id="'scale-input' + cell.id" type="number" step="0.1" max="1" v-model="cell.scale">
+                </div>
+                <figcaption
+                        class="figure-caption text-center">
+                    <label>Title : </label> <input v-on:keydown.ctrl.enter="toggleMode" v-model="cell.title" type="text">
+                </figcaption>
+            </figure>
+        </div>
+        {% include 'includes/components/menus/cell_edit_menu.html' %}
+    </div>
+    <div v-else v-on:dblclick="toggleMode" class="d-flex justify-cell-center">
+        <figure class="figure text-center">
+            <video v-bind:width="cell.scale*100 + '%'" controls>
+                <source v-bind:src="cell.video" type="video/mp4">
+            </video>
+            <figcaption
+                    class="figure-caption text-center" v-text="cell.title">
+            </figcaption>
+        </figure>
+    </div>
+</template>

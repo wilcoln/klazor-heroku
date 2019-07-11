@@ -12,29 +12,34 @@
         <hr>
         <div class="row">
             <div class="col-md-12">
-                <div v-for="content in contents" v-bind:key="content.id">
-                    <video-content v-if="content instanceof VideoContent"
-                                   v-bind:editable="editMode" v-bind:content="content"
-                                   v-on:up="moveContent($event,-1)"
-                                   v-on:down="moveContent($event,1)"
-                                   v-on:delete="deleteContent($event)"></video-content>
-                    <audio-content v-else-if="content instanceof AudioContent"
-                                   v-on:up="moveContent($event,-1)"
-                                   v-on:down="moveContent($event,1)"
-                                   v-bind:editable="editMode" v-bind:content="content"
-                                   v-on:delete="deleteContent($event)"></audio-content>
-                    <image-content v-else-if="content instanceof ImageContent"
-                                   v-on:up="moveContent($event,-1)"
-                                   v-on:down="moveContent($event,1)"
-                                   v-bind:editable="editMode" v-bind:content="content"
-                                   v-on:delete="deleteContent($event)"></image-content>
-                    <markdown-content v-else-if="content instanceof MarkdownContent"
-                                      v-bind:editable="editMode" v-bind:content="content"
-                                      v-on:up="moveContent($event,-1)"
-                                   v-on:down="moveContent($event,1)"
-                                      v-on:delete="deleteContent($event)"
+                <div v-for="cell in cells" v-bind:key="cell.id">
+                    <video-cell v-if="cell instanceof VideoCell"
+                                   v-bind:editable="editMode" v-bind:cell="cell"
+                                   v-on:up="moveCell($event,-1)"
+                                   v-on:down="moveCell($event,1)"
+                                   v-on:delete="deleteCell($event)"></video-cell>
+                    <youtube-cell v-if="cell instanceof YoutubeCell"
+                                   v-bind:editable="editMode" v-bind:cell="cell"
+                                   v-on:up="moveCell($event,-1)"
+                                   v-on:down="moveCell($event,1)"
+                                   v-on:delete="deleteCell($event)"></youtube-cell>
+                    <audio-cell v-else-if="cell instanceof AudioCell"
+                                   v-on:up="moveCell($event,-1)"
+                                   v-on:down="moveCell($event,1)"
+                                   v-bind:editable="editMode" v-bind:cell="cell"
+                                   v-on:delete="deleteCell($event)"></audio-cell>
+                    <image-cell v-else-if="cell instanceof ImageCell"
+                                   v-on:up="moveCell($event,-1)"
+                                   v-on:down="moveCell($event,1)"
+                                   v-bind:editable="editMode" v-bind:cell="cell"
+                                   v-on:delete="deleteCell($event)"></image-cell>
+                    <markdown-cell v-else-if="cell instanceof MarkdownCell"
+                                      v-bind:editable="editMode" v-bind:cell="cell"
+                                      v-on:up="moveCell($event,-1)"
+                                   v-on:down="moveCell($event,1)"
+                                      v-on:delete="deleteCell($event)"
                                         v-on:save="saveSheet">
-                    </markdown-content>
+                    </markdown-cell>
                 </div>
             </div>
         </div>

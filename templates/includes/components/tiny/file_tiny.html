@@ -1,7 +1,7 @@
 {% load filename %}
 {% load iconclass %}
 <div onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)" class="tiny card file mb-3">
-    <i class="fa {{ file_item.file.name|iconify }}"></i>
+    <i class="fa {{ file_item.file.name|iconclass}}"></i>
     <div class="card-body">
         <a href="{{file_item.file.url}}">
             <div class="filename">{{ file_item.file | filename }} </div>

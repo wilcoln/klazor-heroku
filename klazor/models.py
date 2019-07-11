@@ -6,31 +6,35 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.contrib.auth.models import User
+from polymorphic.models import PolymorphicModel
 
 
-class Category(models.Model):
-    title = models.CharField(max_length=20, blank=True, null=True)
+class Topic(models.Model):
+    title = models.CharField(max_length=64, blank=True, null=True)
+    subtopic_set = models.ManyToManyField('Topic', blank=True)
 
     def __str__(self):
         return self.title
 
     class Meta:
-        db_table = 'category'
+        db_table = 'topic'
 
 
-class Instructor(models.Model):
-    title = models.CharField(max_length=20, blank=True, null=True)
+class Instructor(PolymorphicModel):
+    name = models.CharField(max_length=128, blank=True, null=True)
     link = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.title
+        return self.name
 
     class Meta:
         db_table = 'instructor'
 
 
-class Item(models.Model):
-    title = models.CharField(max_length=120, blank=True, null=True)
+class Item(PolymorphicModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=128, blank=True, null=True)
     folder = models.ForeignKey('Folder', null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -47,34 +51,10 @@ class FileItem(Item):
         db_table = 'file'
 
 
-class CourseResource(models.Model):
-    title = models.CharField(max_length=60, blank=True, null=True)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        db_table = 'course_resource'
-
-
-class FileCourseResource(CourseResource):
-    file = models.FileField(upload_to='resources/files')
-
-    class Meta:
-        db_table = 'file_course_resource'
-
-
-class LinkCourseResource(CourseResource):
-    link = models.TextField(blank=True, null=True)
-
-    class Meta:
-        db_table = 'link_course_resource'
-
-
 class Course(Item):
-    category_set = models.ManyToManyField(Category, blank=True)
+    topic_set = models.ManyToManyField(Topic, blank=True)
     instructor_set = models.ManyToManyField(Instructor, blank=True)
-    resource_set = models.ManyToManyField(CourseResource, blank=True)
+    resource_set = models.ManyToManyField(FileItem, blank=True)
 
     class Meta:
         db_table = 'course'
@@ -85,12 +65,13 @@ class Sheet(Item):
         db_table = 'sheet'
 
 
-class CourseItem(Sheet):
-    completed = models.BooleanField(default=False)
+class CourseElement(Sheet):
+    # completed = models.BooleanField(default=False)
     sequence = models.IntegerField(blank=True, null=True)
+    course_part = models.ForeignKey('CoursePart', on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'course_item'
+        db_table = 'course_element'
         ordering = ['sequence', ]
 
 
@@ -105,8 +86,9 @@ class NotSchool(Instructor):
 
 
 class School(Instructor):
-    admissions_link = models.TextField(blank=True, null=True)
-    programs_link = models.TextField(blank=True, null=True)
+    colloquial_name = models.CharField(max_length=8, blank=True, null=True)
+    # admissions_link = models.TextField(blank=True, null=True)
+    # programs_link = models.TextField(blank=True, null=True)
 
     class Meta:
         db_table = 'school'
@@ -115,45 +97,46 @@ class School(Instructor):
 class SchoolCourse(Course):
     year = models.SmallIntegerField(blank=True, null=True)
     semester = models.SmallIntegerField(blank=True, null=True)
-    item_set = models.ManyToManyField(CourseItem)
 
     class Meta:
         db_table = 'school_course'
 
 
-class Week(models.Model):
-    title = models.CharField(max_length=50, blank=True, null=True)
-    mooc_course = models.ForeignKey(MoocCourse, models.DO_NOTHING)
-    item_set = models.ManyToManyField(CourseItem)
+class CoursePart(models.Model):
+    label = models.CharField(max_length=32, default='Week')
+    title = models.CharField(max_length=64, blank=True, null=True)
+    course = models.ForeignKey(Course, models.CASCADE)
+    level = models.SmallIntegerField(default=1)
+    sequence = models.SmallIntegerField(default=1)
 
     def __str__(self):
         return self.title
 
     class Meta:
-        db_table = 'week'
+        db_table = 'course_part'
 
 
-class Content(models.Model):
+class Cell(PolymorphicModel):
     sequence = models.IntegerField(blank=False, null=False)
     sheet = models.ForeignKey(Sheet, models.CASCADE)
 
     class Meta:
-        db_table = 'content'
+        db_table = 'cell'
         ordering = ['sequence', ]
 
 
-class MarkdownContent(Content):
+class MarkdownCell(Cell):
     text = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return (self.text[:75] + '...') if len(self.text) > 75 else self.text
 
     class Meta:
-        db_table = 'markdown_content'
+        db_table = 'markdown_cell'
 
 
-class VideoContent(Content):
-    title = models.CharField(max_length=50, blank=True, null=True)
+class VideoCell(Cell):
+    title = models.CharField(max_length=64, blank=True, null=True)
     video = models.FileField(upload_to='videos')
     scale = models.FloatField(default=1)
 
@@ -161,22 +144,34 @@ class VideoContent(Content):
         return self.title
 
     class Meta:
-        db_table = 'video_content'
+        db_table = 'video_cell'
 
 
-class AudioContent(Content):
-    title = models.CharField(max_length=50, blank=True, null=True)
+class YoutubeCell(Cell):
+    title = models.CharField(max_length=64, blank=True, null=True)
+    youtube = models.TextField(blank=True, null=True)
+    scale = models.FloatField(default=1)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        db_table = 'youtube_cell'
+
+
+class AudioCell(Cell):
+    title = models.CharField(max_length=64, blank=True, null=True)
     audio = models.FileField(upload_to='audios')
 
     def __str__(self):
         return self.title
 
     class Meta:
-        db_table = 'audio_content'
+        db_table = 'audio_cell'
 
 
-class ImageContent(Content):
-    title = models.CharField(max_length=50, blank=True, null=True)
+class ImageCell(Cell):
+    title = models.CharField(max_length=64, blank=True, null=True)
     image = models.FileField(upload_to='images')
     scale = models.FloatField(default=1)
 
@@ -184,11 +179,12 @@ class ImageContent(Content):
         return self.title
 
     class Meta:
-        db_table = 'image_content'
+        db_table = 'image_cell'
 
 
 class Folder(models.Model):
-    name = models.CharField(max_length=20, blank=True, null=True)
+    user = models.ForeignKey(User, null=True, default=1, on_delete=models.CASCADE)
+    name = models.CharField(max_length=128, blank=True, null=True)
     parent = models.ForeignKey('Folder', models.CASCADE, null=True)
 
     def __str__(self):

@@ -1,9 +1,14 @@
-      <!-- menu -->
-      <div id="CourseMenu">
-        <div class="list-group">
-          <a href="{% url 'school-course' school_course.id %}" class="list-group-item list-group-item-primary rounded-0">{{ school_course.title }}</a>
-          {% for item in school_course.item_set.all %}
-              <a href="{% url 'school-course-item' item.id %}" class="w-100 list-group-item list-group-item-secondary rounded-0">{{ forloop.counter }}. {{ item.title|truncatechars:30}}{% if item.completed %} <i class="float-right fa fa-check-circle text-success"></i> {% endif %}</a>
-          {% endfor %}
+ <!-- menu -->
+ <div id="CourseMenu">
+  <div class="list-group">
+  <a href="{% url 'school-course' school_course.id %}" class="list-group-item list-group-item-primary rounded-0">{{ school_course.title }}</a>
+    {% for coursepart in school_course.coursepart_set.all %}
+        <a href="#_{{ coursepart.id }}" class="w-100 list-group-item list-group-item-secondary rounded-0" data-toggle="collapse" data-parent="#CourseMenu"> {{ coursepart.label }} {{ forloop.counter }}: {{ coursepart.title|truncatechars:30}} <i class="fa fa-caret-down float-right"></i></a>
+        <div class="collapse show" id="_{{ coursepart.id }}">
+        {% for courseelement in coursepart.courseelement_set.all %}
+            <a href="{% url 'school-course-item' courseelement.id %}" class="list-group-item rounded-0">{{ courseelement.title }} {% if courseelement.completed %} <i class="float-right fa fa-check-circle text-success"></i> {% endif %}</a>
+        {% endfor %}
         </div>
-      </div>
+    {% endfor %}
+  </div>
+</div>

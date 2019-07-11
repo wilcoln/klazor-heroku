@@ -2,7 +2,7 @@
 <script src="{% static 'marked/lib/marked.js' %}"></script>
 <script src="{% static 'vue/dist/vue.min.js' %}"></script>
 <script src="{% static 'highlight.js/lib/highlight.pack.js' %}"></script>
-<script src="{% static 'js/contents.js' %}"></script>
+<script src="{% static 'js/cells.js' %}"></script>
 <script src="{% static 'js/sheet.js' %}"></script>
 <script src="{% static 'axios/dist/axios.min.js' %}"></script>
 <script src="{% static 'js-cookie/src/js.cookie.js' %}"></script>
@@ -34,9 +34,9 @@
             }
         },
     })
-    Vue.component('markdown-content', {
-        template: "#markdown-content",
-        props: ['content', 'editable'],
+    Vue.component('markdown-cell', {
+        template: "#markdown-cell",
+        props: ['cell', 'editable'],
         data: function () {
             return {
                 codeMirror: null
@@ -44,19 +44,19 @@
         },
         computed: {
             html: function () {
-                return marked(this.content.text)
+                return marked(this.cell.text)
             }
         },
         methods: {
             toggleMode: function () {
                 if (this.editable) {
-                    this.content.editMode = !this.content.editMode
-                    if (!this.content.editMode)
+                    this.cell.editMode = !this.cell.editMode
+                    if (!this.cell.editMode)
                         MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.$el.querySelector('.markdown-display')]);
                 }
             },
             flushText: function () {
-                this.content.text = this.codeMirror.getValue('\n')
+                this.cell.text = this.codeMirror.getValue('\n')
             },
             editorCtrlS: function () {
                 this.flushText()
@@ -87,21 +87,21 @@
         },
     })
 
-    Vue.component('video-content', {
-        template: "#video-content",
-        props: ['content', 'editable'],
+    Vue.component('video-cell', {
+        template: "#video-cell",
+        props: ['cell', 'editable'],
         methods: {
             toggleMode: function () {
                 if (this.editable)
-                    this.content.editMode = !this.content.editMode
+                    this.cell.editMode = !this.cell.editMode
             },
             updateVideo: function () {
-                let inputId = 'input-' + this.content.id
+                let inputId = 'input-' + this.cell.id
                 let input = document.getElementById(inputId)
                 if (input.files && input.files[0]) {
                     let reader = new FileReader()
                     reader.onload = (e) => {
-                        this.content.video = e.target.result
+                        this.cell.video = e.target.result
                     }
                     reader.readAsDataURL(input.files[0])
                 }
@@ -109,21 +109,32 @@
         },
     })
 
-    Vue.component('audio-content', {
-        template: "#audio-content",
-        props: ['content', 'editable'],
+    Vue.component('youtube-cell', {
+        template: "#youtube-cell",
+        props: ['cell', 'editable'],
         methods: {
             toggleMode: function () {
                 if (this.editable)
-                    this.content.editMode = !this.content.editMode
+                    this.cell.editMode = !this.cell.editMode
+            },
+        },
+    })
+
+    Vue.component('audio-cell', {
+        template: "#audio-cell",
+        props: ['cell', 'editable'],
+        methods: {
+            toggleMode: function () {
+                if (this.editable)
+                    this.cell.editMode = !this.cell.editMode
             },
             updateAudio: function () {
-                let inputId = 'input-' + this.content.id
+                let inputId = 'input-' + this.cell.id
                 let input = document.getElementById(inputId)
                 if (input.files && input.files[0]) {
                     let reader = new FileReader()
                     reader.onload = (e) => {
-                        this.content.audio = e.target.result
+                        this.cell.audio = e.target.result
                     }
                     reader.readAsDataURL(input.files[0])
                 }
@@ -131,22 +142,22 @@
         },
     })
 
-    Vue.component('image-content', {
-        template: "#image-content",
-        props: ['content', 'editable'],
+    Vue.component('image-cell', {
+        template: "#image-cell",
+        props: ['cell', 'editable'],
         methods: {
             toggleMode: function () {
                 if (this.editable)
-                    this.content.editMode = !this.content.editMode
+                    this.cell.editMode = !this.cell.editMode
             },
             //Preview before upload
             updateImage: function () {
-                let inputId = 'input-' + this.content.id
+                let inputId = 'input-' + this.cell.id
                 let input = document.getElementById(inputId)
                 if (input.files && input.files[0]) {
                     let reader = new FileReader()
                     reader.onload = (e) => {
-                        this.content.image = e.target.result
+                        this.cell.image = e.target.result
                     }
                     reader.readAsDataURL(input.files[0])
                 }
@@ -158,56 +169,63 @@
         el: "#sheet",
         data: { // Represents the sheet as described by the Sheet class
             title: `{{ sheet.title|safe}}`, // sheets title
-            contents: [],
+            cells: [],
             editMode: false,
             saved: false,
-            savedContents: 0
+            savedCells: 0,
+            autosave: false,
+            saveInterval: null
         },
         methods: {
             toggleMode() {
+                // this.autosave = !this.autosave
                 this.editMode = !this.editMode
             },
             updateTitle(title) {
                 this.title = title
             },
-            deleteContent(id) {
-                this.contents = this.contents.filter((content) => {
-                    console.log("Deleting the content of id =  " + id)
-                    return content.id !== id
+            deleteCell(id) {
+                this.cells = this.cells.filter((cell) => {
+                    console.log("Deleting the cell of id =  " + id)
+                    return cell.id !== id
                 })
             },
-            addVideoContent() {
-                let videoContent = new VideoContent(this.lastInsertedId + 1, '', '', 1)
-                this.contents.push(videoContent)
+            addVideoCell() {
+                let videoCell = new VideoCell(this.lastInsertedId + 1, '', '', 1)
+                this.cells.push(videoCell)
             },
-            addAudioContent() {
-                let audioContent = new AudioContent(this.lastInsertedId + 1, '')
-                this.contents.push(audioContent)
+            addYoutubeCell() {
+                let youtubeCell = new YoutubeCell(this.lastInsertedId + 1, '', '', 1)
+                this.cells.push(youtubeCell)
             },
-            addImageContent() {
-                let imageContent = new ImageContent(this.lastInsertedId + 1, '', '', 1)
-                this.contents.push(imageContent)
+            addAudioCell() {
+                let audioCell = new AudioCell(this.lastInsertedId + 1, '')
+                this.cells.push(audioCell)
             },
-            addMarkdownContent() {
-                let markdownContent = new MarkdownContent(this.lastInsertedId + 1, '')
-                this.contents.push(markdownContent)
+            addImageCell() {
+                let imageCell = new ImageCell(this.lastInsertedId + 1, '', '', 1)
+                this.cells.push(imageCell)
             },
-            moveContent(id, shift) {
-                let content = this.contents.filter((content) => {
-                    return content.id === id
+            addMarkdownCell() {
+                let markdownCell = new MarkdownCell(this.lastInsertedId + 1, '')
+                this.cells.push(markdownCell)
+            },
+            moveCell(id, shift) {
+                let cell = this.cells.filter((cell) => {
+                    return cell.id === id
                 })[0]
-                let contentIndex = this.contents.indexOf(content)
-                let otherContentIndex = contentIndex + shift
-                if (otherContentIndex > -1 && otherContentIndex < this.contents.length) {
-                    [this.contents[contentIndex], this.contents[otherContentIndex]] = [this.contents[otherContentIndex], this.contents[contentIndex]]
+                let cellIndex = this.cells.indexOf(cell)
+                let otherCellIndex = cellIndex + shift
+                if (otherCellIndex > -1 && otherCellIndex < this.cells.length) {
+                    [this.cells[cellIndex], this.cells[otherCellIndex]] = [this.cells[otherCellIndex], this.cells[cellIndex]]
                     //swap id to trigger vue reactivity
-                    let tmp = this.contents[contentIndex].id
-                    this.contents[contentIndex].id = this.contents[otherContentIndex].id
-                    this.contents[otherContentIndex].id = tmp
+                    let tmp = this.cells[cellIndex].id
+                    this.cells[cellIndex].id = this.cells[otherCellIndex].id
+                    this.cells[otherCellIndex].id = tmp
                 }
             },
             clearSheet() {
-                this.contents = []
+                this.cells = []
             },
             saveSheet() {
                 let csrftoken = Cookies.get('csrftoken')
@@ -219,7 +237,7 @@
                     {
                         headers: {
                             'X-CSRFToken': csrftoken,
-                            'content-Type': "text/plain"
+                            'cell-Type': "text/plain"
                         }
                     }
                 ).then((response) => {
@@ -230,7 +248,7 @@
                      */
                     let highLightElt = document.querySelector('.highlight-item')
                     if (highLightElt)
-                        highLightElt.firstElementChild.firstElementChild.nextSibling.textContent = ' ' + sheet.title
+                        highLightElt.firstElementChild.firstElementChild.nextSibling.textCell = ' ' + sheet.title
                     /**
                      * End case
                      */
@@ -238,66 +256,70 @@
                     setTimeout(() => {
                         sheet.saved = false
                     }, 2500)
-                    sheet.savedContents = 0
+                    sheet.savedCells = 0
                     console.log("uploading files...")
-                    for (let content of sheet.contents) {
-                        let lightContent = {}
-                        let lightContentJson = null
+                    for (let cell of sheet.cells) {
+                        let lightCell = {}
+                        let lightCellJson = null
                         // Upload files
                         let formData = null
                         let file = null
-                        lightContent.id = content.id
-                        if (content instanceof VideoContent) {
-                            lightContent.title = content.title
-                            lightContent.scale = content.scale
-                            lightContent.video = null
-                            file = content.video
-                        } else if (content instanceof AudioContent) {
-                            lightContent.title = content.title
-                            lightContent.audio = null
-                            file = content.audio
-                        } else if (content instanceof ImageContent) {
-                            lightContent.title = content.title
-                            lightContent.scale = content.scale
-                            lightContent.image = null
-                            file = content.image
-                        } else if (content instanceof MarkdownContent) {
-                            lightContent.text = content.text.replace(/\\/g, '\\\\')
-                            lightContent.text = lightContent.text.replace(/`/g, '\\`') // escape for markdown monospace syntaxe
+                        lightCell.id = cell.id
+                        if (cell instanceof VideoCell) {
+                            lightCell.title = cell.title
+                            lightCell.scale = cell.scale
+                            lightCell.video = null
+                            file = cell.video
+                        } else if (cell instanceof AudioCell) {
+                            lightCell.title = cell.title
+                            lightCell.audio = null
+                            file = cell.audio
+                        } else if (cell instanceof YoutubeCell) {
+                            lightCell.title = cell.title
+                            lightCell.youtube = cell.youtube
+                            lightCell.scale = cell.scale
+                        } else if (cell instanceof ImageCell) {
+                            lightCell.title = cell.title
+                            lightCell.scale = cell.scale
+                            lightCell.image = null
+                            file = cell.image
+                        } else if (cell instanceof MarkdownCell) {
+                            lightCell.text = cell.text.replace(/\\/g, '\\\\')
+                            lightCell.text = lightCell.text.replace(/`/g, '\\`') // escape for markdown monospace syntaxe
                         }
 
                         formData = new FormData()
                         formData.append('file', file)
-                        formData.append('title', lightContent.title)
+                        formData.append('title', lightCell.title)
                         axios.post('/upload/',
                             formData,
                             {
                                 headers: {
                                     'X-CSRFToken': csrftoken,
-                                    'content-Type': 'multipart/form-data'
+                                    'cell-Type': 'multipart/form-data'
                                 }
                             }
                         ).then((success) => {
                             console.log(success)
                             console.log(" 1 file uploaded !")
-                            console.log(" saving content ...")
+                            console.log(" saving cell ...")
                             // Le serveur renvoie le chemin du fichier fraichement sauvegardé
-                            lightContent.filename = success.data === 'no_new_name' ? content.filename : success.data
-                            lightContent.sequence = sheet.contents.indexOf(content) + 1
-                            lightContentJson = JSON.stringify(lightContent)
+                            lightCell.filename = success.data === 'no_new_name' ? cell.filename : success.data
+                            lightCell.sequence = sheet.cells.indexOf(cell) + 1
+                            lightCellJson = JSON.stringify(lightCell)
                             axios({
                                 method: 'post',
-                                url: '/sheet/' + {{ sheet.id }} +'/content/save/',
+                                url: '/sheet/' + {{ sheet.id }} +'/cell/save/',
                                 data: {
-                                    'content': lightContentJson
+                                    'cell': lightCellJson
                                 },
                                 headers: {
                                     "X-CSRFToken": csrftoken,
-                                    "content-type": "application/json"
+                                    "cell-type": "application/json"
                                 }
                             }).then((response) => {
-                                console.log("1 content saved !")
-                                sheet.savedContents++
+                                console.log("1 cell saved !")
+                                sheet.savedCells++
                                 console.log(response)
                             }).catch((error) => {
                                 console.log(error)
@@ -315,38 +337,47 @@
         },
         computed: {
             lastInsertedId() {
-                let lastIndex = this.contents.length - 1
-                return lastIndex > -1 ? this.contents[lastIndex].id : 0
+                let lastIndex = this.cells.length - 1
+                return lastIndex > -1 ? this.cells[lastIndex].id : 0
             }
         },
         watch: {
-            savedContents: function () {
-                if (this.savedContents === this.contents.length) {
+            savedCells: function () {
+                if (this.savedCells === this.cells.length) {
                     sheet.saved = true
                     sheet = this
                     setTimeout(() => {
                         sheet.saved = false
                     }, 2500)
-                    sheet.savedContents = 0
+                    sheet.savedCells = 0
                 }
-            }
+            },
+            autosave: function(val){
+                let sheet = this
+                if(val)
+                     sheet.saveInterval = setInterval(sheet.saveSheet, 5000)
+                else
+                    clearInterval(sheet.saveInterval)
+            },
         },
         beforeMount() {
             let text = ""
             let counter = 0
 
-            {% for content in sheet.content_set.all  %}
+            {% for cell in sheet.cell_set.all  %}
                 counter = {{ forloop.counter }}
-                    {% if content.videocontent %}
-                        this.contents.push(new VideoContent(counter, `{{ content.videocontent.title }}`, `{{ content.videocontent.video.url }}`, {{ content.videocontent.scale }}))
-                    {% elif content.audiocontent %}
-                        this.contents.push(new AudioContent(counter, `{{ content.audiocontent.title }}`, `{{ content.audiocontent.audio.url}}`))
-                    {% elif content.imagecontent %}
-                        this.contents.push(new ImageContent(counter, `{{ content.imagecontent.title }}`, `{{ content.imagecontent.image.url }}`, {{ content.imagecontent.scale }}))
-                    {% elif content.markdowncontent %}
-                        text = `{{ content.markdowncontent.text|safe }}`
+                    {% if cell.videocell %}
+                        this.cells.push(new VideoCell(counter, `{{ cell.videocell.title }}`, `{{ cell.videocell.video.url }}`, {{ cell.videocell.scale }}))
+                    {% elif cell.youtubecell %}
+                        this.cells.push(new YoutubeCell(counter, `{{ cell.youtubecell.title }}`, `{{ cell.youtubecell.youtube}}`, {{ cell.youtubecell.scale }}))
+                    {% elif cell.audiocell %}
+                        this.cells.push(new AudioCell(counter, `{{ cell.audiocell.title }}`, `{{ cell.audiocell.audio.url}}`))
+                    {% elif cell.imagecell %}
+                        this.cells.push(new ImageCell(counter, `{{ cell.imagecell.title }}`, `{{ cell.imagecell.image.url }}`, {{ cell.imagecell.scale }}))
+                    {% elif cell.markdowncell %}
+                        text = `{{ cell.markdowncell.text|safe }}`
                         text = text.replace(/\\\\/g, '\\\\') // escape backslash for mathjax compatibility
-                        this.contents.push(new MarkdownContent(counter, text))
+                        this.cells.push(new MarkdownCell(counter, text))
                     {% endif %}
             {% endfor %}
         }

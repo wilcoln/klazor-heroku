@@ -1,0 +1,9 @@
+<div class="cell-edit-menu col-1">
+    <div class="d-flex justify-cell-between align-items-center">
+        <i v-on:click="$emit('delete', cell.id)" class="fa fa-trash"></i>
+    <div>
+        <i v-on:click="$emit('up', cell.id)" class="fa fa-caret-up"></i> <br>
+        <i v-on:click="$emit('down', cell.id)" class="fa fa-caret-down"></i>
+    </div>
+    </div>
+</div>

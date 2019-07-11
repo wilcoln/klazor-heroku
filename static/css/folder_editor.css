@@ -6,3 +6,8 @@
     position: sticky;
     top: 6.5rem;
 }
+@media print {
+    .col-md-3, .col-md-3 *{
+        display:none !important;
+    }
+}

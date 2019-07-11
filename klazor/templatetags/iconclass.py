@@ -5,7 +5,7 @@ register = template.Library()
 
 
 @register.filter
-def iconify(filename):
+def iconclass(filename):
     ext = filename.split('.')[-1]
     if ext in ['txt', 'tex']:
         return 'fa-file-text-o'

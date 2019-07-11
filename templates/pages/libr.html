@@ -1,0 +1,43 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/welcome.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tiny.css' %}">
+{% endblock %}
+{% block title %} Libr {% endblock %}
+{% block content %}
+    <div class="container">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">ISBN</th>
+                <th scope="col">Author(s)</th>
+                <th scope="col">Title</th>
+                <th scope="col">Publisher</th>
+                <th scope="col">Year</th>
+                <th scope="col">Pages</th>
+                <th scope="col">Language</th>
+                <th scope="col">Size</th>
+                <th scope="col">Extension</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for book in books %}
+                <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ book.isbn }}</td>
+                <td>{{ book.author_set.all.first.name }}</td>
+                <td><a href="{{ book.file.url }}">{{ book.title }}</a></td>
+                <td>{{ book.publisher.name }}</td>
+                <td>{{ book.year }}</td>
+                <td>{{ book.nb_pages }}</td>
+                <td>{{ book.lang_alpha2}}</td>
+                <td>{{ book.file.file|filesizeformat }}</td>
+                <td> pdf </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

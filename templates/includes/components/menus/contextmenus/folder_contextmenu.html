@@ -1,0 +1,8 @@
+<!-- initially hidden right-click menu -->
+<div class="hide rmenu" id="fmenu_{{ folder.id }}">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item list-group-item-action"><a href="#renameFolderModal_{{ folder.id }}" data-toggle="modal" data-target="#renameFolderModal_{{ folder.id }}"> <i class="fa fa-edit"></i> &nbsp; Rename folder</a></li>
+        <li class="list-group-item list-group-item-action"><a href="{% url 'folder-to-mooc-course' folder.id %}"> <i class="fa fa-graduation-cap"></i> Convert to Mooc</a></li>
+        <li class="list-group-item list-group-item-action"><a  class="text-danger" href=""> <i class="fa fa-trash"></i> &nbsp; Delete folder</a></li>
+    </ul>
+</div>

@@ -67,6 +67,22 @@
                 </div>
             {% endfor %}
         </div>
+    <hr>
+        <div class="file-container  row">
+            {% include 'includes/components/modals/add_folder_files.html' with folder_id=1 %}
+            <div class="col-12">
+                <h1> Fichiers
+                    <small>({{ file_items.count|default:0 }})</small>
+                    <button type="button" class="btn float-right badge badge-secondary" data-toggle="modal"
+                            data-target="#addFileModal"><i class="fa fa-plus"></i></button>
+                </h1>
+            </div>
+            {% for file_item in file_items %}
+                <div class="col-lg-3 col-md-4">
+                    {% include 'includes/components/tiny/file_tiny.html' with file_item=file_item %}
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
 {% endblock %}
