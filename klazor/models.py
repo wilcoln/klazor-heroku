@@ -116,6 +116,7 @@ class CoursePart(models.Model):
 
     class Meta:
         db_table = 'course_part'
+        ordering = ['id', ]
 
 
 class Cell(PolymorphicModel):
