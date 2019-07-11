@@ -194,3 +194,4 @@ class Folder(models.Model):
 
     class Meta:
         db_table = 'folder'
+        ordering = ['id', ]
