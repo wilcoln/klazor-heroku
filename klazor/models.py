@@ -42,6 +42,8 @@ class Item(PolymorphicModel):
 
     class Meta:
         db_table = 'item'
+        ordering = ['id', ]
+        
 
 
 class FileItem(Item):
