@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'libr',
     'rest_framework',
     'api',
-    'libr'
 ]
 
 REST_FRAMEWORK = {
