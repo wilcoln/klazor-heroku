@@ -37,9 +37,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'klazor',
+    'libr',
     'rest_framework',
     'api'
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -134,5 +143,8 @@ STATIC_ROOT = BASE_DIR + '/public/'
 MEDIA_ROOT = BASE_DIR + '/media/'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 500242880
+
+LOGIN_REDIRECT_URL='/'
+LOGOUT_REDIRECT_URL='/'
 
 django_heroku.settings(locals())
