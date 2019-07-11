@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'klazor',
     'rest_framework',
-    'api'
+    'api',
+    'libr'
 ]
 
 MIDDLEWARE = [
@@ -134,5 +135,7 @@ STATIC_ROOT = BASE_DIR + '/public/'
 MEDIA_ROOT = BASE_DIR + '/media/'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 500242880
+LOGIN_REDIRECT_URL='/'
+LOGOUT_REDIRECT_URL='/'
 
 django_heroku.settings(locals())
