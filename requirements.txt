@@ -13,3 +13,4 @@ djangorestframework==3.9.4
 django-polymorphic==2.0.3
 reportlab==3.5.23
 django-cors-headers
+mysqlclient
