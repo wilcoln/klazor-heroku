@@ -21,7 +21,8 @@ function copyFileUrl(url){
 }
 function copySheetUrl(id){
     // Change this in production mode
-    let url = 'http:/127.0.0.1/8000/sheet/' + id
+    let appLocation = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+    let url = appLocation + '/sheet/' + id
     copyTextToClipboard(url)
 }
 function copyTextToClipboard(textValue){

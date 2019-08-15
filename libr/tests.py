@@ -1,3 +1,13 @@
 from django.test import TestCase
 
-# Create your tests here.
+
+class PublisherModelTests(TestCase):
+    pass
+
+
+class AuthorModelTests(TestCase):
+    pass
+
+
+class BookModelTests(TestCase):
+    pass

@@ -5,6 +5,4 @@ from libr.models import Book
 
 def index(request):
     books = Book.objects.all()
-    return render(request, 'pages/libr.html', {
-        'books': books
-    })
+    return render(request, 'pages/libr.html', {'books': books})
