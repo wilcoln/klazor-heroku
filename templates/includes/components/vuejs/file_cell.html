@@ -1,0 +1,24 @@
+<template id="file-cell">
+    <div class="row cell-editable" v-if="editable && cell.editMode">
+        <div class="col-11">
+            <figure class="figure text-center">
+                <label>File Url : </label> &nbsp; <input class="mb-2" v-bind:id="'input-' + cell.id" type="text" v-model="cell.url">
+                <br>
+                <figcaption
+                        class="figure-caption text-center">
+                    <label>Title : </label>&nbsp; <input v-on:keydown.ctrl.enter="toggleMode" v-model="cell.title" type="text">
+                </figcaption>
+            </figure>
+        </div>
+        {% include 'includes/components/menus/cell_edit_menu.html' %}
+    </div>
+    <div v-else v-on:dblclick="toggleMode" class="text-center">
+        <figure class="figure">
+            {% verbatim %}
+            <div>
+                <a :href="cell.url"><i class="file fa" :class="cell.url | iconclass"></i> {{ cell.title }}</a>
+            </div>
+            {% endverbatim %}
+        </figure>
+    </div>
+</template>

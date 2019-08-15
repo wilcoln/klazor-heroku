@@ -1,0 +1,12 @@
+<div class="tiny card sheet mb-3" oncontextmenu="openTinySheetContextMenu(event, {{ sheet.id }})">
+    <i class="fa fa-leaf"></i>
+    <div class="card-body">
+        <a href="{% url 'sheet' sheet.id %}">
+            <div class="sheet-title">{{ sheet.title }}</div>
+        </a>
+        <small class="text-muted ">{{ sheet.cell_set.all.count }} cell{{ sheet.cell_set.all.count|pluralize }}</small>
+        {% block other_info %}{% endblock %}
+    </div>
+</div>
+{% include 'includes/components/menus/contextmenus/tiny_sheet_contextmenu.html' with folder=folder %}
+{% include 'includes/components/modals/move_sheet.html' with sheet=sheet %}

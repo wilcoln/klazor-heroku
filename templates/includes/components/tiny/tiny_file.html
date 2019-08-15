@@ -1,0 +1,13 @@
+{% load filename %}
+{% load iconclass %}
+<div class="tiny card file mb-3" oncontextmenu="openTinyFileContextMenu(event, {{ file_item.id }})">
+    <i class="file fa {{ file_item.file.name|iconclass}}"></i>
+    <div class="card-body">
+        <a href="{{file_item.file.url}}">
+            <div class="filename">{{ file_item.file | filename }} </div>
+        </a>
+        <small class="text-muted ">size : {{ file_item.file.size | filesizeformat}}</small>
+        {% block other_info %}{% endblock %}
+    </div>
+</div>
+{% include 'includes/components/menus/contextmenus/tiny_file_contextmenu.html' with file_item=file_item %}

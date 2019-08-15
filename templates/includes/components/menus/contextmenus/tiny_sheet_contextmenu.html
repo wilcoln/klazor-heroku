@@ -1,0 +1,24 @@
+{% extends 'includes/components/menus/contextmenus/contextmenu.html' %}
+{% block contextmenu_id %}
+    id="smenu_{{ sheet.id }}"
+{% endblock %}
+{% block contextmenu_items %}
+    {#        <li class="list-group-item list-group-item-action"><a href="#changeSheetTitleModal_{{ sheet.id }}" data-toggle="modal" data-target="#changeSheetTitleModal_{{ sheet.id }}"> <i class="fa fa-edit"></i> &nbsp;Change title</a></li>#}
+    {% if sheet.folder.id != folder.id %}
+        <li class="list-group-item list-group-item-action"><a href="{% url 'folder' sheet.folder.id %}"> <i class="fa fa-folder-open"></i> Open Location</a></li>
+    {% endif %}
+    <li class="list-group-item list-group-item-action">
+        <a href="#moveSheetModal_{{ sheet.id }}" data-toggle="modal" data-target="#moveSheetModal_{{ sheet.id }}"> <i class="fa fa-arrows"></i> &nbsp; Move sheet</a>
+    </li>
+    <li class="list-group-item list-group-item-action"><button class="rmenu-action text-danger" onclick="copySheetUrl({{sheet.id}})"><i class="fa fa-link"></i> &nbsp;Copy Sheet Url </button></li>
+
+    <li class="list-group-item list-group-item-action">
+        <form action="{% url 'delete-sheet' sheet.id %}" method="post">
+            {% csrf_token %}
+            <button role="submit" class="rmenu-action text-danger"><i class="fa fa-trash"></i> &nbsp; Delete sheet
+            </button>
+        </form>
+        {% block other_items %}
+        {% endblock %}
+    </li>
+{% endblock %}

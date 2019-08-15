@@ -1,0 +1,73 @@
+{% if courses.all.count %}
+    <hr>
+    <div class="course-container row">
+        <div class="col-12">
+            <h1> Cours
+                <small>({{ courses.all.count }})</small>
+                <a href="{% url 'add-course' folder.id %}" class="mr-2 btn float-right badge badge-info">
+                    <i class="fa fa-plus"></i></a>
+            </h1>
+        </div>
+        {% for course in courses %}
+            <div class="col-md-4">
+                {% include 'includes/components/tiny/tiny_course.html' with course=course %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% if sub_folders.all.count %}
+    <hr>
+    <div class="folder-container row">
+        {% include 'includes/components/modals/add_folder.html' with parent_id=folder.id %}
+        <div class="col-12">
+            <h1> Dossiers
+                <small>({{ sub_folders.all.count|default:0 }})</small>
+                <button type="button" class="btn mr-2 float-right badge badge-primary" data-toggle="modal"
+                        data-target="#addFolderModal"><i class="fa fa-plus"></i></button>
+            </h1>
+        </div>
+
+        {% for folder in  sub_folders %}
+            <div class="col-lg-2 col-md-3">
+                {% include 'includes/components/tiny/tiny_folder.html' with folder=folder %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if sheets.all.count %}
+    <hr>
+    <div class="sheet-container  row">
+        <div class="col-12">
+            <h1> Feuilles
+                <small>({{ sheets|length|default:0 }})</small>
+                <a href="{% url 'add-sheet' folder.id %}" class="mr-2 btn float-right badge badge-success"><i
+                        class="fa fa-plus"></i>
+                </a></h1>
+        </div>
+        {% for sheet in  sheets %}
+            <div class="col-lg-2 col-md-3">
+                {% include 'includes/components/tiny/tiny_sheet.html' %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% if file_items.all.count %}
+    <hr>
+    <div class="file-container  row">
+        {% include 'includes/components/modals/add_folder_files.html' with folder_id=folder.id %}
+        <div class="col-12">
+            <h1> Fichiers
+                <small>({{ file_items.count|default:0 }})</small>
+                <button type="button" class="btn mr-2 float-right badge badge-secondary" data-toggle="modal"
+                        data-target="#addFileModal"><i class="fa fa-plus"></i></button>
+            </h1>
+        </div>
+        {% for file_item in file_items %}
+            <div class="col-lg-3 col-md-4">
+                {% include 'includes/components/tiny/tiny_file.html' with file_item=file_item %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% include 'includes/components/menus/contextmenus/folder_contextmenu.html' with folder=folder %}

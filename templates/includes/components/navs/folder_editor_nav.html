@@ -1,29 +1,33 @@
-{%  load filename %}
-{%  load iconclass %}
+{% load filename %}
+{% load iconclass %}
 <!-- menu -->
 <div id="folder-nav" class="p-2">
-    <div>
-        <a href="{% url 'folder' folder.parent.id %}" class="text-center">
-            <strong>../</strong><i class="text-primary fa fa-arrow-left"></i>
-        </a>
-    </div>
     <div>
         <a href="{% url 'folder' folder.id %}">
             <i class="fa fa-folder-open"></i> <strong>{{ folder.name | truncatechars:40 }}</strong>
         </a>
-        <a href="{% url 'new-folder-sheet' folder.id %}" class="float-right badge badge-success"> <i
+        <a href="{% url 'add-sheet' folder.id %}" class="float-right badge badge-success"> <i
                 class="fa fa-plus"></i></a>
-        <button type="button" class="btn float-right badge badge-primary mx-2" data-toggle="modal"
-                data-target="#exampleModalCenter"><i class="fa fa-plus"></i></button>
     </div>
     <div class="folder-content pl-2">
+        <small class="text-muted">Feuilles</small>
         {% for child_sheet in sheets.all %}
             <div {% if child_sheet.id == sheet_id %}{{ 'class="highlight-item"' }}{% endif %}>
                 <a href="{% url 'folder-editor' folder.id child_sheet.id %}"><i
-                        class="text-success fa fa-leaf"></i> {{ child_sheet.title | truncatechars:40 }}</a>
+                        class="text-success fa fa-leaf"></i> <span {% if child_sheet.id == sheet_id %} class="sheet-title-text" {% endif %}>{{ child_sheet.title | truncatechars:40 }}</span></a>
             </div>
         {% endfor %}
-        <hr style="height: 1px; width: 70%; margin: .5rem auto;">
+        <hr class="mb-0">
+        <small class="text-muted">Cours</small>
+        {% for course in courses %}
+            <div>
+                <a href="{% url 'course' course.id %}">
+                    <i class="text-primary fa fa-graduation-cap"></i> {{ course.title | truncatechars:40 }}
+                </a>
+            </div>
+        {% endfor %}
+        <hr class="mb-0">
+        <small class="text-muted">Fichiers</small>
         {% for file_item in file_items %}
             <div>
                 <a href="{{ file_item.file.url }}">
@@ -31,6 +35,8 @@
                 </a>
             </div>
         {% endfor %}
+        <hr class="mb-0">
+        <small class="text-muted">Sous dossiers</small>
         {% for sub_folder in folder.folder_set.all %}
             <div>
                 <a href="{% url 'folder' sub_folder.id %}">

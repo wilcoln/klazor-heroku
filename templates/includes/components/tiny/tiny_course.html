@@ -1,0 +1,12 @@
+<div class="tiny card course mb-3" oncontextmenu="openTinyCourseContextMenu(event, {{ course.id }})">
+    <i class="fa fa-graduation-cap"></i>
+    <div class="card-body">
+        <a href="{% url 'course' course.id %}">
+            <div class="course-name">
+                {{ course.title }}
+            </div>
+        </a>
+        <small class="text-muted ">{{ course.coursepart_set.all.count }} part{{ course.coursepart_set.all.count|pluralize }}</small>
+    </div>
+</div>
+{% include 'includes/components/menus/contextmenus/tiny_course_contextmenu.html' with course=course %}

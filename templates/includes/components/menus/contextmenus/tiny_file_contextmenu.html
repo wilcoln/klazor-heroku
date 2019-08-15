@@ -1,0 +1,14 @@
+{% extends 'includes/components/menus/contextmenus/contextmenu.html' %}
+{% block contextmenu_id %}
+    id="file-menu_{{ file_item.id }}"
+{% endblock %}
+{% block contextmenu_items %}
+    <li class="list-group-item list-group-item-action"><button class="rmenu-action text-danger" onclick="copyFileUrl(`{{ file_item.file.url}}`)"><i class="fa fa-link"></i> &nbsp;Copy file Url </button></li>
+    <li class="list-group-item list-group-item-action">
+        <form action="{% url 'remove-folder-file' file_item.id %}" method="post">
+            {% csrf_token %}
+            <button role="submit" class="rmenu-action text-danger"><i class="fa fa-trash"></i> &nbsp; Delete File
+            </button>
+        </form>
+    </li>
+{% endblock %}

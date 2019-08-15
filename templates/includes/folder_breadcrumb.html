@@ -1,0 +1,43 @@
+<nav aria-label="breadcrumb">
+
+    <ol class="folder-breadcrumb breadcrumb">
+        {% for ascendant in folder.ascendants %}
+            <li class="breadcrumb-item">
+                <a href="{% url 'folder' ascendant.id %}">
+                    {% if ascendant.id == 1 %}
+                        <i class="fa fa-home"></i>
+                    {% else %}
+                        {{ ascendant.name }}
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+        <li class="dropdown show breadcrumb-item active" aria-current="page">
+            <a class="text-secondary" href="#" role="button" id="dropdownMenuLink"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% if folder.id == 1 %}
+                    <i class="fa fa-home"></i>
+                {% else %}
+                    {{ folder.name }}
+                {% endif %}
+                <i class="fa fa-caret-down"></i>
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                {% if folder.id != 1 and sheets.count %}
+                    <a class="dropdown-item" href="{% url 'folder-editor' folder.id sheets.first.id %}"> <i class="fa fa-th-list"></i>
+                        Toggle folder editor</a>
+                {% endif %}
+                <a class="dropdown-item" href="{% url 'add-sheet' folder.id %}"> <i class="fa fa-leaf"></i> &nbsp; Add Sheet</a>
+                <button data-toggle="modal" data-target="#addFolderModal" class="dropdown-item"><i class="fa fa-folder"></i>
+                    &nbsp;
+                    Add folder
+                </button>
+                <a class="dropdown-item" href="{% url 'add-course' folder.id %}"> <i class="fa fa-graduation-cap"></i> Add course</a>
+                <button data-toggle="modal" data-target="#addFileModal" class="dropdown-item"><i class="fa fa-files-o"></i>&nbsp;
+                    Add files
+                </button>
+            </div>
+        </li>
+    </ol>
+</nav>

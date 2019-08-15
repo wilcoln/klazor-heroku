@@ -1,17 +1,20 @@
 {% load static %}
-<nav class="navbar mb-4 justify-content-start sticky-top navbar-expand-lg navbar-dark">
+<nav class="navbar mb-2 justify-content-start sticky-top navbar-expand-lg navbar-dark">
     <a class="navbar-brand" href="{% url 'welcome' %}">
-        <img src="{% static 'img/logo.png' %}" height="50" class="d-inline-block align-top" alt="">
+        <img src="{% static 'img/logo.png' %}" height="40" class="d-inline-block align-top" alt="">
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+    <button class="pt-0 navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <input type="text" placeholder="Rechercher..." aria-label="pattern">
+    <input type="text" placeholder="Rechercher..." aria-label="pattern" class="form-control form-control-sm">
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link text-white" href="{% url 'libr' %}"><i class="fa fa-book"></i> Libr</a>
+                <a class="nav-link text-white" href="{% url 'libr:index' %}"><i class="fa fa-book"></i> Libr</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="#"><i class="fa fa-globe"></i> Explore</a>
             </li>
         </ul>
     </div>

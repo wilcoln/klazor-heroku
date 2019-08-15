@@ -1,8 +1,22 @@
-<!-- initially hidden right-click menu -->
-<div class="hide rmenu" id="fmenu_{{ folder.id }}">
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item list-group-item-action"><a href="#renameFolderModal_{{ folder.id }}" data-toggle="modal" data-target="#renameFolderModal_{{ folder.id }}"> <i class="fa fa-edit"></i> &nbsp; Rename folder</a></li>
-        <li class="list-group-item list-group-item-action"><a href="{% url 'folder-to-mooc-course' folder.id %}"> <i class="fa fa-graduation-cap"></i> Convert to Mooc</a></li>
-        <li class="list-group-item list-group-item-action"><a  class="text-danger" href=""> <i class="fa fa-trash"></i> &nbsp; Delete folder</a></li>
-    </ul>
-</div>
+{% extends 'includes/components/menus/contextmenus/contextmenu.html' %}
+{% block contextmenu_id %}
+    id="folder-menu_{{ folder.id }}"
+{% endblock %}
+{% block contextmenu_items %}
+    <li class="list-group-item list-group-item-action"><a href="{% url 'add-sheet' folder.id %}"> <i
+            class="fa fa-leaf"></i> &nbsp; Add Sheet</a></li>
+    <li class="list-group-item list-group-item-action">
+        <button data-toggle="modal"
+                data-target="#addFolderModal" class="rmenu-action text-primary"><i class="fa fa-folder"></i> &nbsp;
+            Add folder
+        </button>
+    </li>
+    <li class="list-group-item list-group-item-action"><a href="{% url 'add-course' folder.id %}"> <i
+            class="fa fa-graduation-cap"></i> Add course</a></li>
+    <li class="list-group-item list-group-item-action">
+        <button data-toggle="modal"
+                data-target="#addFileModal" class="rmenu-action text-primary"><i class="fa fa-files-o"></i> &nbsp; Add
+            files
+        </button>
+    </li>
+{% endblock %}

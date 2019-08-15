@@ -1,0 +1,49 @@
+<!-- Modal -->
+<div class="modal fade" id="moveSheetModal_{{ sheet.id }}" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Déplacer Feuille '{{ sheet.title }}'</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if sheet.folder.parent %}
+                    <div>
+                        <a href="{% url 'move-sheet' sheet.id sheet.folder.parent.id %}" class="text-center">
+                            {% if sheet.folder.parent.id == 1 %} <i class="fa fa-home"></i> {% else %}
+                                {{ sheet.folder.parent.name }} {% endif %}/<i
+                                class="text-primary fa fa-arrow-left"></i>
+                        </a>
+                    </div>
+                {% endif %}
+                <div class="folder-content pl-2">
+                    {% if sheet.folder.id == 1 %}
+                        {% for sub_folder in  sub_folders %}
+                            <div>
+                                <a href="{% url 'move-sheet' sheet.id sub_folder.id %}">
+                                    <i class="text-primary fa fa-folder"></i> {{ sub_folder.name | truncatechars:40 }}
+                                </a>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {% for sub_folder in sheet.folder.folder_set.all %}
+                            <div>
+                                <a href="{% url 'move-sheet' sheet.id sub_folder.id %}">
+                                    <i class="text-primary fa fa-folder"></i> {{ sub_folder.name | truncatechars:40 }}
+                                </a>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
+                {#                <button type="submit" class="btn btn-primary">Déplacer</button>#}
+            </div>
+        </div>
+    </div>
+</div>

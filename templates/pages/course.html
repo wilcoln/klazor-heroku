@@ -1,35 +1,35 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-{% block title %} {{ school_course.title }} {% endblock %}
+{% block title %} {{ course.title }} {% endblock %}
 {% block style %} <link rel="stylesheet" href="{% static 'css/course.css' %}"> {% endblock %}
 {% block content %}
     <div class="base-container">
     <div class="row">
         <div class="col-md-3">
-        {% include 'includes/components/navs/school_course_nav.html' with school_course=school_course%}
+        {% include 'includes/components/navs/course_nav.html' with course=course%}
         </div>
         <div class="col-md-9">
-            <h1 class="text-center">{{ school_course.title}}</h1>
+            <h1 class="text-center">{{ course.title}}</h1>
             <hr>
             <div class="container">
                 <section>
                     <h2 class="text-muted">Contenu du cours </h2><br>
-                    {% for coursepart in school_course.coursepart_set.all  %}
+                    {% for coursepart in course.coursepart_set.all  %}
                         <div class="row">
                             <h3 class="col-md-2">{{ coursepart.label }} {{ coursepart.sequence }} :</h3>
                             <h3 class="col-md-10">{{ coursepart.title }}</h3>
                         </div>
                         <ul class="row">
                             {% for courseelement in coursepart.courseelement_set.all %}
-                                <li class="col-md-9 offset-3"><a href="{% url 'school-course-item' courseelement.id %}">{{ courseelement.title }} {% if courseelement.completed %} <i class="fa fa-check-circle text-success"></i> {% endif %}</a></li>
+                                <li class="col-md-9 offset-3"><a href="{% url 'course-element' course.id coursepart.sequence courseelement.sequence %}">{{ courseelement.title }} {% if courseelement.completed %} <i class="fa fa-check-circle text-success"></i> {% endif %}</a></li>
                             {% endfor %}
                         </ul>
                     {% endfor %}
                 </section>
                 <hr>
-                {% include 'includes/components/course_resources.html' with resources=school_course.resource_set.all %}
+                {% include 'includes/components/course_resources.html' with resources=course.resource_set.all %}
                 <hr>
-                {% include 'includes/components/course_instructors.html' with instructors=school_course.instructor_set.all %}
+                {% include 'includes/components/course_instructors.html' with instructors=course.instructor_set.all %}
             </div>
         </div>
         </div>

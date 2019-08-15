@@ -4,7 +4,7 @@
 }
 #folder-nav{
     position: sticky;
-    top: 6.5rem;
+    top: 3.65rem;
 }
 @media print {
     .col-md-3, .col-md-3 *{

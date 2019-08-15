@@ -1,0 +1,5 @@
+{% extends 'includes/components/tiny/tiny_sheet.html' %}
+{% block other_info %}
+    <br>
+    <span class="recent-info">{% include 'includes/components/tiny/created_updated.html' with obj=sheet %}</span>
+{% endblock %}

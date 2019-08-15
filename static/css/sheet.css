@@ -3,8 +3,23 @@
   src: url("/static/font/source-code-pro.ttf");
 }
 
+body{
+    background: whitesmoke;
+}
+
 @media print {
+    body{
+        background: white;
+    }
+    .sheet-component{
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
     .sheet-toolbar, .sheet-toolbar *{
+        display:none !important;
+    }
+    .sheet-breadcrumb * {
         display:none !important;
     }
 }
@@ -18,28 +33,38 @@
 .editable .sheet-component{
     margin-bottom: 85vh;
 }
-.sheet-component .markdown-display{
+.sheet-component .sheet-body .markdown-display{
     min-height: 3px;
 }
-.sheet-component .sheet-title{
+.sheet-component h1.sheet-title{
     color: black;
+    font-size: 1.4rem;
 }
-.sheet-component h1{
-    color: black;
+.sheet-component .sheet-body h1{
+    color: #101010;
+    font-size: 1.4rem;
+    border-bottom: 1px solid #101010;
+    margin-bottom: .5rem;
+
 }
-.sheet-component h2{
+.sheet-component .sheet-body h2{
     color: #252525;
+    font-size: 1.2rem;
 }
-.sheet-component h3{
+.sheet-component .sheet-body h3{
     color: #505050;
+    font-size: 1rem;
+}
+.sheet-component .sheet-body{
+    font-size: 1rem;
 }
 .sheet-toolbar{
     position: sticky;
-    top: .6rem;
+    top: 3.15rem;
     z-index: 1021;
     background: transparent;
     padding-top: .8rem;
-    border-radius: 10px;
+    /*border-radius: 10px;*/
 
 }
 .sheet-toolbar .btn-group i.fa.fa-plus, .btn-clear i.fa.fa-warning{
@@ -55,9 +80,6 @@
     background-color: transparent;
     border:none;
 }
-.sheet-toolbar .btn-group button:hover{
-    transform: scale(1.1);
-}
 .sheet-toolbar .btn-group button:hover i{
     color: #007bff;
 }
@@ -69,6 +91,9 @@
     margin-right: 1rem;
     margin-bottom: 1rem;
     height: 100%;
+}
+.sheet-toolbar .btn-group i.fa-ellipsis-v{
+    font-size: 1.7rem;
 }
 .sheet-toolbar .mode i{
     font-size: 1.8rem;
@@ -102,7 +127,7 @@
 .sheet-toolbar .btn-clear:hover{
     color: #dc3545;
 }
-.sheet-component h1 > input{
+.sheet-component h1.sheet-title > input{
     display: inline-block;
     width: 100%;
     padding: .2rem;
@@ -212,23 +237,17 @@ tr:nth-child(even) {
   background: #efefef;
 }
 
-tr:hover {
+/*tr:hover {
   background: #d1d1d1;
-}
-/**sheet component font size*/
-.sheet-component .row{
-    font-size: 105%;
-}
+}*/
 
 .alert.alert-dismissible{
     text-align: center;
     border-radius: 0px;
+    display: none;
 }
 .scale-input{
     width: 50px;
-}
-.alert{
-    display: none;
 }
 .edit-menu{
     display: none;
@@ -240,6 +259,11 @@ tr:hover {
     height: fit-content;
     border: 1px solid #ccc;
     background: #f5f5f5;
+    font-size: 1rem;
+}
+.CodeMirror-focused{
+    background: white;
+    border-color: rgba(0,125, 255, .8);
 }
 /** End **/
 
@@ -248,13 +272,41 @@ input{
 }
 .cell-editable{
     margin-bottom: .5rem;
-    border: 1px solid transparent;
-    border-right-width: 5px;
+    border-right: 5px solid transparent;
     padding: .5rem;
 }
 .cell-editable:hover{
-    border-color: rgba(0,125, 255, .4);
+    border-color: rgba(0,125, 255, .8);
 }
 .cell-edit-menu i{
-    font-size: 1.6rem;
+    font-size: 1.4rem;
+}
+#sheet-drawer{
+    z-index: 1022;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 20rem;
+    background-color:white;
+    box-shadow: 0 0 1rem rgba(0,0,0,.1);
+}
+
+#sheet-drawer h1{
+    font-size: 1.2rem;
+}
+#sheet-drawer h2{
+    font-size: 1rem;
+}
+#sheet-drawer .cell-btn{
+    border: none;
+    background: none;
+    margin: .2rem;
+}
+#sheet-drawer .cell-btn .cell-icon{
+    font-size: 1.4rem;
+    color: grey;
+}
+#sheet-drawer .cell-btn:hover .cell-icon{
+    color: #007bff;
 }

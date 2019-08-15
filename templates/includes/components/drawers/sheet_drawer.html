@@ -1,0 +1,31 @@
+<div id="sheet-drawer" class="collapse">
+   <div class="container pt-2">
+       <i class="text-muted float-right fa fa-close" data-toggle="collapse" href="#sheet-drawer" role="button" aria-expanded="false" aria-controls="sheet-drawer"></i>
+        <h1>Cells</h1>
+       <hr>
+    <div class="row">
+        <div class="col-12">
+            <input type="search" class="form-control" placeholder="search cell type...">
+        </div>
+
+        {#     Common  cells #}
+        <div class="col-12 mt-2"><h2>Common</h2></div>
+       <div class="col-12">
+            <button class="cell-btn" v-on:click="addVideoCell"> <i class="cell-icon fa fa-file-movie-o"></i></button>
+            <button class="cell-btn" v-on:click="addYoutubeCell"> <i class="cell-icon fa fa-youtube-square"></i></button>
+            <button class="cell-btn" v-on:click="addImageCell"> <i class="cell-icon fa fa-file-image-o"></i></button>
+            <button class="cell-btn" v-on:click="addAudioCell"> <i class="cell-icon fa fa-file-audio-o"></i></button>
+            <button class="cell-btn" v-on:click="addMarkdownCell"> <i class="cell-icon fa fa-file-text-o"></i></button>
+            <button class="cell-btn" v-on:click="addFileCell"> <i class="cell-icon fa fa-paperclip"></i></button>
+       </div>
+
+        {#     Form  cells #}
+        <div class="col-12 mt-2"><h2>Form</h2></div>
+        <div class="col-12">
+            <button class="cell-btn" v-on:click="addQuestionCell(1)"> <i class="cell-icon fa fa-question"></i><small class="text-muted">QCM</small></button>
+            <button class="cell-btn" v-on:click="addQuestionCell(2)"> <i class="cell-icon fa fa-question"></i><small class="text-muted">QRN</small></button>
+            <button class="cell-btn" v-on:click="addQuestionCell(3)"> <i class="cell-icon fa fa-question"></i><small class="text-muted">QRO</small></button>
+        </div>
+    </div>
+   </div>
+</div>

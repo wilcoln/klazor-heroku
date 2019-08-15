@@ -1,12 +1,18 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 {% block style %}
+    {% include 'includes/styles/highlightjs_style.html' %}
+    {% include 'includes/styles/codemirror_style.html' %}
     <link rel="stylesheet" href="{% static 'css/course.css' %}">
     <link rel="stylesheet" href="{% static 'css/sheet.css' %}">
 {% endblock %}
 {% block title %} {{ sheet.title }}{% endblock %}
 {% block content %}
-    {% include 'includes/components/sheet.html' with sheet=sheet %}
+    <div class="container">
+        {% include 'includes/sheet_breadcrumb.html' with sheet=sheet %}
+        {% include 'includes/components/sheet.html' with sheet=sheet %}
+    </div>
+
 {% endblock %}
 {% block script %}
     {% include 'includes/scripts/sheet_script.html' %}

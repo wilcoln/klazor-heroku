@@ -1,0 +1,38 @@
+<!-- Modal -->
+<div class="modal fade" id="moveFolderModal_{{ folder.id }}" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Déplacer Dossier '{{ folder.name }}'</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if folder.parent and folder.parent.parent %}
+                    <div>
+                        <a href="{% url 'move-folder' folder.id folder.parent.parent.id %}" class="text-center">
+                            {% if folder.parent.parent.id == 1 %} <i class="fa fa-home"></i> {% else %}
+                                {{ folder.parent.parent.name }}{% endif %}/<i class="text-primary fa fa-arrow-left"></i>
+                        </a>
+                    </div>
+                {% endif %}
+                <div class="folder-content pl-2">
+                    {% for sibling_folder in folder.siblings %}
+                        <div>
+                            <a href="{% url 'move-folder' folder.id sibling_folder.id %}">
+                                <i class="text-primary fa fa-folder"></i> {{ sibling_folder.name | truncatechars:40 }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
+                {#                <button type="submit" class="btn btn-primary">Déplacer</button>#}
+            </div>
+        </div>
+    </div>
+</div>

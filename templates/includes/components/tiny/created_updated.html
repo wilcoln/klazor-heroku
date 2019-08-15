@@ -1,0 +1,9 @@
+{% load humanize %}
+<small class="natural-time">
+    {% if obj.created_at == obj.updated_at %}
+        Created {{ obj.created_at | naturaltime | truncatechars:13 }}
+    {% else %}
+        Updated {{ obj.updated_at | naturaltime | truncatechars:13 }}
+    {% endif %}
+    {% comment %}{{ obj.updated_at | naturaltime | capfirst | truncatechars:15 }}{% endcomment %}
+</small>

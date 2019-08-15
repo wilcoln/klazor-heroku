@@ -1,0 +1,22 @@
+/* Context menu styling  */
+
+.rmenu{
+    z-index:1000;
+    position: fixed;
+    width: fit-content;
+    border-width: 0;
+    box-shadow: .0rem .0rem 1rem rgba(0,0,0,.2);
+    display: none;
+}
+.rmenu .rmenu-action{
+    border-width: 0;
+    background-color: transparent;
+    padding-left: 0px;
+}
+.rmenu.show{
+    display: block;
+}
+.rmenu.show .list-group-item{
+    padding: 5px 5px;
+    font-size: .8rem;
+}

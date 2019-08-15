@@ -1,22 +1,40 @@
-document.onclick = closeAllContextMenu // Close all context menu on click
-
-function closeAllContextMenu(){
-    let contextmenus = document.querySelectorAll('.rmenu');
-    for(let contextmenu of contextmenus)
-        contextmenu.className = "rmenu hide"
-}
-function openFolderContextMenu(e, id) {
-    e.preventDefault()
-    closeAllContextMenu()
+function openTinyFolderContextMenu(e, id) {
     let contextmenuId = "fmenu_" + id
-    document.getElementById(contextmenuId).className = "rmenu show";
-    document.getElementById(contextmenuId).style.position = 'absolute';
-    document.getElementById(contextmenuId).style.top = e.clientY*.001 + 'px';
-    document.getElementById(contextmenuId).style.left = e.clientX*.25 + 'px';
-
-    window.event.returnValue = false;
+    openContextMenu(e, contextmenuId)
 }
 
+function openTinySheetContextMenu(e, id) {
+    let contextmenuId = "smenu_" + id
+    openContextMenu(e, contextmenuId)
+}
+function openTinyCourseContextMenu(e, id) {
+    let contextmenuId = "cmenu_" + id
+    openContextMenu(e, contextmenuId)
+}
+
+function openTinyFileContextMenu(e, id) {
+    let contextmenuId = "file-menu_" + id
+    openContextMenu(e, contextmenuId)
+}
+function copyFileUrl(url){
+    copyTextToClipboard(url)
+}
+function copySheetUrl(id){
+    // Change this in production mode
+    let url = 'http:/127.0.0.1/8000/sheet/' + id
+    copyTextToClipboard(url)
+}
+function copyTextToClipboard(textValue){
+    /* Select the text field */
+    let inputElt = document.createElement("input")
+    inputElt.type = 'text'
+    inputElt.value = textValue
+    document.body.append(inputElt)
+    inputElt.select()
+    /* Copy the text inside the text field */
+    document.execCommand("copy");
+    document.body.removeChild(inputElt)
+}
 function deleteFolder(id) {
     axios({
         method: 'post',
@@ -43,12 +61,4 @@ function deleteSheet(id) {
     }).catch((error) => {
         console.log(error)
     });
-}
-
-function showDeleteButton(e) {
-    e.firstElementChild.nextElementSibling.lastElementChild.lastElementChild.style.display = 'inline-block'
-}
-
-function hideDeleteButton(e) {
-    e.firstElementChild.nextElementSibling.lastElementChild.lastElementChild.style.display = 'none'
 }

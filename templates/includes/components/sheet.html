@@ -1,16 +1,10 @@
 <div id="sheet" :class="{ 'editable': editMode}">
-    <div class="alert alert-success alert-dismissible" v-bind:style="{ display: saved ? 'block':'none' }" role="alert">
-        Sauvegarde réussie !
-        <button type="button" v-on:click="saved=false" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
     {% include 'includes/components/menus/sheet_menu.html' %}
-    <div class="container sheet-component">
+    <div class="sheet-component">
         {% verbatim %}
         <sheet-title v-bind:title="title" v-bind:editable="editMode" v-on:update="updateTitle($event)" v-on:save="saveSheet"></sheet-title>
         <hr>
-        <div class="row">
+        <div class="sheet-body row">
             <div class="col-md-12">
                 <div v-for="cell in cells" v-bind:key="cell.id">
                     <video-cell v-if="cell instanceof VideoCell"
@@ -40,9 +34,30 @@
                                       v-on:delete="deleteCell($event)"
                                         v-on:save="saveSheet">
                     </markdown-cell>
+                    <file-cell v-else-if="cell instanceof FileCell"
+                                   v-on:up="moveCell($event,-1)"
+                                   v-on:down="moveCell($event,1)"
+                                   v-bind:editable="editMode" v-bind:cell="cell"
+                                   v-on:delete="deleteCell($event)"></file-cell>
+                    <numerical-question-cell v-else-if="cell instanceof NumericalQuestionCell"
+                                   v-on:up="moveCell($event,-1)"
+                                   v-on:down="moveCell($event,1)"
+                                   v-bind:editable="editMode" v-bind:cell="cell"
+                                   v-on:delete="deleteCell($event)"></numerical-question-cell>
+                    <open-ended-question-cell v-else-if="cell instanceof OpenEndedQuestionCell"
+                                   v-on:up="moveCell($event,-1)"
+                                   v-on:down="moveCell($event,1)"
+                                   v-bind:editable="editMode" v-bind:cell="cell"
+                                   v-on:delete="deleteCell($event)"></open-ended-question-cell>
+                    <multiple-choice-question-cell v-else-if="cell instanceof MultipleChoiceQuestionCell"
+                                   v-on:up="moveCell($event,-1)"
+                                   v-on:down="moveCell($event,1)"
+                                   v-bind:editable="editMode" v-bind:cell="cell"
+                                   v-on:delete="deleteCell($event)"></multiple-choice-question-cell>
                 </div>
             </div>
         </div>
         {% endverbatim %}
     </div>
+    {% include 'includes/components/drawers/sheet_drawer.html' with sheet=sheet %}
 </div>

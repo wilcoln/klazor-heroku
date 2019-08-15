@@ -1,0 +1,12 @@
+{% extends 'includes/components/menus/contextmenus/contextmenu.html' %}
+{% block contextmenu_id %}
+    id="cmenu_{{ course.id }}"
+{% endblock %}
+{% block contextmenu_items %}
+    <li class="list-group-item list-group-item-action">
+        <form action="{% url 'delete-course' course.id %}" method="post">
+            {% csrf_token %}
+            <button role="submit" class="rmenu-action text-danger"><i class="fa fa-trash"></i> &nbsp; Delete course
+            </button>
+        </form>
+{% endblock %}

@@ -1,0 +1,12 @@
+<div class="tiny card folder mb-3" oncontextmenu="openTinyFolderContextMenu(event, {{ folder.id }})">
+    <i class="fa fa-folder"></i>
+    <div class="card-body">
+        <a href="{% url 'folder' folder.id %}">
+            <div class="folder-name">{{ folder.name }} </div>
+        </a>
+        <small class="text-muted ">{{ folder.item_set.all.count |add:folder.folder_set.all.count }} item{{ folder.item_set.all.count |add:folder.folder_set.all.count | pluralize }}</small>
+    </div>
+</div>
+{% include 'includes/components/menus/contextmenus/tiny_folder_contextmenu.html' with folder=folder %}
+{% include 'includes/components/modals/rename_folder.html' with folder=folder %}
+{% include 'includes/components/modals/move_folder.html' with folder=folder %}

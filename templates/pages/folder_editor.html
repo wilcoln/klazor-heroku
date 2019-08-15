@@ -1,16 +1,17 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 {% block style %}
+    {% include 'includes/styles/highlightjs_style.html' %}
+    {% include 'includes/styles/codemirror_style.html' %}
     <link rel="stylesheet" href="{% static 'css/sheet.css' %}">
     <link rel="stylesheet" href="{% static 'css/folder_editor.css' %}">
 {% endblock %}
 {% block title %} {{ folder.name }} {% endblock %}
 {% block content %}
-    {% include 'includes/components/modals/create_folder.html' with parent_id=folder.id %}
     <div class="base-container">
         <div class="row">
             <div class="col-md-3">
-                {% include 'includes/components/navs/folder_editor_nav.html' with folder=folder sheets=sheets file_items=file_items sheet_id=active_sheet.id %}
+                {% include 'includes/components/navs/folder_editor_nav.html' with folder=folder courses=courses sheets=sheets file_items=file_items sheet_id=active_sheet.id %}
             </div>
             <div class="col-md-9">
                 {% include 'includes/components/sheet.html' with sheet=active_sheet %}
