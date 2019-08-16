@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,9 +26,6 @@ SECRET_KEY = 't0(@c7h3tqbrrc&29j%(8(fs5bu18n8)iwe3)68@#z39(fkf6g'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-CORS_ORIGIN_ALLOW_ALL = True
-
 
 # Application definition
 
@@ -47,8 +45,6 @@ INSTALLED_APPS = [
     'crispy_forms'
 ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -58,7 +54,6 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -98,7 +93,7 @@ WSGI_APPLICATION = 'klazor.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'klazor',
+        'NAME': 'klazor_heroku',
         'USER': 'wilcoln',
         'PASSWORD': '',
         'HOST': '',
@@ -140,14 +135,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/public/'
 MEDIA_URL = '/media/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'node_modules')
 )
+
+STATIC_ROOT = BASE_DIR + '/public/'
 MEDIA_ROOT = BASE_DIR + '/media/'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 500242880
 LOGIN_REDIRECT_URL='/'
 LOGOUT_REDIRECT_URL='/'
+
+django_heroku.settings(locals())
