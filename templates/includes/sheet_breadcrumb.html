@@ -1,4 +1,4 @@
-{% if user.id == sheet.id %}
+{% if user.id == sheet.user.id %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb sheet-breadcrumb">
             {% for ascendant in sheet.folder.ascendants %}
