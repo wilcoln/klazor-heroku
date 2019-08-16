@@ -88,7 +88,7 @@ def view_folder_editor(request, id, sheet_id):
     folder = Folder.objects.get(pk=id)
     file_items = FileItem.objects.filter(folder=id)
     return render(request, 'pages/folder_editor.html',
-                  {'folder': folder, 'active_sheet': active_sheet, 'courses': courses, 'sheets': sheets,
+                  {'folder': folder, 'active_sheet': active_sheet, 'courses': courses, 'sheets': sheets, 'edit_mode': False,
                    'file_items': file_items})
 
 
