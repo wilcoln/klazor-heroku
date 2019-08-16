@@ -13,7 +13,7 @@
     <li class="list-group-item list-group-item-action"><button class="rmenu-action text-danger" onclick="copySheetUrl({{sheet.id}})"><i class="fa fa-link"></i> &nbsp;Copy Sheet Url </button></li>
 
     <li class="list-group-item list-group-item-action">
-        <form action="{% url 'delete-sheet' sheet.id %}" method="post">
+        <form action="{% url 'delete-item' sheet.id %}" method="post">
             {% csrf_token %}
             <button role="submit" class="rmenu-action text-danger"><i class="fa fa-trash"></i> &nbsp; Delete sheet
             </button>

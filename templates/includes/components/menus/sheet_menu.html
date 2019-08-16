@@ -1,26 +1,27 @@
-<div class="container sheet-toolbar d-flex align-items-center">
-    <!-- Rounded switch -->
-    <label class="switch mr-3">
-        <input type="checkbox" v-on:click="toggleMode">
-        <span class="slider round"></span>
-    </label>
-    <div class="mode"><i class="fa" v-bind:class="{ 'fa-eye': !editMode, 'fa-edit':editMode}" ></i></div>
-    <div class="mx-2 pb-3 text-muted" v-bind:style="{display: !editMode ? 'inline-block':'none' }">{% include 'includes/infos/last_modified.html' with obj=sheet %}</div>
-    <div class="edit-menu justify-cell-around" v-bind:style="{display: editMode ? 'flex':'none' }">
-        <div class="separator"></div>
-        <div class="btn-group" role="group">
-            <button v-on:click="addVideoCell"><i class="fa fa-plus"></i> <i class="fa fa-file-movie-o"></i></button>
-            <button v-on:click="addYoutubeCell"><i class="fa fa-plus"></i> <i class="fa fa-youtube-square"></i></button>
-            <button v-on:click="addAudioCell"><i class="fa fa-plus"></i> <i class="fa fa-file-audio-o"></i></button>
-            <button v-on:click="addImageCell"><i class="fa fa-plus"></i> <i class="fa fa-file-image-o"></i></button>
-            <button v-on:click="addMarkdownCell"><i class="fa fa-plus"></i> <i class="fa fa-file-text-o"></i></button>
-            <button class="px-3 sheet-drawer-btn" data-toggle="collapse" href="#sheet-drawer" role="button" aria-expanded="false" aria-controls="sheet-drawer"><i class="fa fa-ellipsis-v"></i></button>
+{% if user.id == sheet.id %}
+    <div class="container sheet-toolbar d-flex align-items-center">
+        <!-- Rounded switch -->
+        <label class="switch mr-3">
+            <input type="checkbox" v-on:click="toggleMode">
+            <span class="slider round"></span>
+        </label>
+        <div class="mode"><i class="fa" v-bind:class="{ 'fa-eye': !editMode, 'fa-edit':editMode}" ></i></div>
+        <div class="mx-2 pb-3 text-muted" v-bind:style="{display: !editMode ? 'inline-block':'none' }">{% include 'includes/infos/last_modified.html' with obj=sheet %}</div>
+        <div class="edit-menu justify-cell-around" v-bind:style="{display: editMode ? 'flex':'none' }">
+            <div class="separator"></div>
+            <div class="btn-group" role="group">
+                <button v-on:click="addVideoCell"><i class="fa fa-plus"></i> <i class="fa fa-file-movie-o"></i></button>
+                <button v-on:click="addYoutubeCell"><i class="fa fa-plus"></i> <i class="fa fa-youtube-square"></i></button>
+                <button v-on:click="addAudioCell"><i class="fa fa-plus"></i> <i class="fa fa-file-audio-o"></i></button>
+                <button v-on:click="addImageCell"><i class="fa fa-plus"></i> <i class="fa fa-file-image-o"></i></button>
+                <button v-on:click="addMarkdownCell"><i class="fa fa-plus"></i> <i class="fa fa-file-text-o"></i></button>
+                <button class="px-3 sheet-drawer-btn" data-toggle="collapse" href="#sheet-drawer" role="button" aria-expanded="false" aria-controls="sheet-drawer"><i class="fa fa-ellipsis-v"></i></button>
+            </div>
+            <div class="separator"></div>
+            <button class="btn-save mr-3" v-on:click="saveSheet"><i class="fa fa-save"></i> Save</button>
+            {% comment %}<button class="btn-clear mr-3 " v-on:click="clearSheet"><i class="fa fa-warning"></i> <i class="fa fa-eraser"></i> Clear</button>{% endcomment %}
+            <div class="mx-2 pb-3 text-muted">{% include 'includes/infos/last_modified.html' with obj=sheet %}</div>
         </div>
-        <div class="separator"></div>
-        <button class="btn-save mr-3" v-on:click="saveSheet"><i class="fa fa-save"></i> Save</button>
-        {% comment %}<button class="btn-clear mr-3 " v-on:click="clearSheet"><i class="fa fa-warning"></i> <i class="fa fa-eraser"></i> Clear</button>{% endcomment %}
-        <div class="mx-2 pb-3 text-muted">{% include 'includes/infos/last_modified.html' with obj=sheet %}</div>
+        {% comment %}<a href="{% url 'print-sheet' sheet.id %}"><i class="fa fa-print"></i>Print Sheet</a>{% endcomment %}
     </div>
-    {% comment %}<a href="{% url 'print-sheet' sheet.id %}"><i class="fa fa-print"></i>Print Sheet</a>{% endcomment %}
-
-</div>
+{% endif %}

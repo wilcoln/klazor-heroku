@@ -181,9 +181,9 @@ def save_cell(request, id):
     return HttpResponse(str(cell_dict))
 
 
-def delete_sheet(request, id):
-    sheet = Sheet.objects.get(pk=id)
-    sheet.delete()
+def delete_item(request, id):
+    item = Item.objects.get(pk=id)
+    item.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
@@ -217,13 +217,7 @@ def add_course(request, folder_id):
     return render(request, 'pages/edit_course.html', {'course': course, 'form': form})
 
 
-def delete_course(request, id):
-    course = Course.objects.get(pk=id)
-    course.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-
-def new_folder(request):
+def add_folder(request):
     folder = Folder()
     folder.user = request.user
     folder.parent_id = request.POST['parent-id']
@@ -239,10 +233,10 @@ def rename_folder(request, id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
-def move_sheet(request, id, destination_id):
-    sheet = Sheet.objects.get(pk=id)
-    sheet.folder_id = destination_id
-    sheet.save()
+def move_item(request, id, destination_id):
+    item = Item.objects.get(pk=id)
+    item.folder_id = destination_id
+    item.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
@@ -265,12 +259,6 @@ def add_folder_files(request):
         file_item.title = file.name
         file_item.file = file
         file_item.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-
-def remove_folder_file(request, id):
-    file_item = FileItem.objects.filter(pk=id)
-    file_item.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 

@@ -2,7 +2,7 @@
 <div class="modal fade" id="addFolderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-        <form action="{% url 'new-folder' %}" method="post">
+        <form action="{% url 'add-folder' %}" method="post">
             {% csrf_token %}
             <div class="modal-content">
                 <div class="modal-header">
