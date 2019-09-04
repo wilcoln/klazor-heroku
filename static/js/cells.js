@@ -50,7 +50,7 @@ class AudioCell extends MediaCell {
     }
 }
 
-class ImageCell extends Cell {
+class ImageCell extends GraphicMediaCell {
    constructor(id, title, url, scale){
         super(id, title, url, scale)
     }
