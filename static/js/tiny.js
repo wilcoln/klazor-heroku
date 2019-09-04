@@ -16,13 +16,16 @@ function openTinyFileContextMenu(e, id) {
     let contextmenuId = "file-menu_" + id
     openContextMenu(e, contextmenuId)
 }
-function copyFileUrl(url){
+function copyFileUrl(fileLocation){
+    let url = getAppLocation() + fileLocation
     copyTextToClipboard(url)
+}
+function getAppLocation(){
+    return location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
 }
 function copySheetUrl(id){
     // Change this in production mode
-    let appLocation = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    let url = appLocation + '/sheet/' + id
+    let url = getAppLocation() + '/sheet/' + id
     copyTextToClipboard(url)
 }
 function copyTextToClipboard(textValue){

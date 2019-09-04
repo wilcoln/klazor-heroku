@@ -1,0 +1,16 @@
+input.search{
+    background: rgba(255,255,255, .8) url(/static/img/search-black.png) 95% 50% no-repeat  !important;
+    color: black !important;
+}
+body{
+    font-size: smaller;
+}
+h1{
+    font-size: 1rem;
+}
+i.fa.document-type{
+    color: rgba(0, 123, 255, 0.51);
+}
+.card{
+    border-radius: 0;
+}

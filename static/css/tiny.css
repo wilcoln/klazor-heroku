@@ -1,21 +1,24 @@
 .tiny{
     position: relative;
 }
-.tiny.card i.fa {
+.tiny.card > i.fa {
     position: absolute;
     top: .4rem;
     right: .5rem;
     font-size: 2rem;
     color: rgba(18, 94, 240, .2);
 }
-.tiny.card i.fa.fa-graduation-cap{
+.tiny.card > i.fa.fa-graduation-cap{
     color: rgba(91,192,222, .4)
 }
 .tiny.card i.fa.fa-leaf{
     color: rgba(92,184,92, .3)
 }
+.tiny.card.course-element i.fa.fa-leaf{
+    color: rgba(91,192,222, .4)
+}
 .tiny.card i.fa.file{
-    color: #ccc
+    color: #ccc;
 }
 .tiny.card .fa.fa-trash:hover {
     color: rgba(255, 0, 0, .4);
@@ -28,7 +31,20 @@
     white-space: nowrap;
     text-transform: capitalize;
 }
-
+.tiny .folder-name, .tiny .sheet-title, .tiny .sheet-course-title {
+    text-overflow: ellipsis;
+    width: 97px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-transform: capitalize;
+}
+.tiny .sheet-location-title {
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-transform: capitalize;
+}
 .tiny .filename {
     white-space: nowrap;
     overflow: hidden;
