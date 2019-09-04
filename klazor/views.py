@@ -1,6 +1,6 @@
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse, HttpResponseRedirect, FileResponse
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse, JsonResponse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from reportlab.pdfgen import canvas
@@ -34,14 +34,14 @@ def register(request):
 
 def welcome(request):
     if request.user.is_authenticated:
-        quick_access = Sheet.objects.filter(folder_id__isnull=False, user_id=request.user.id).order_by('-updated_at')[
+        quick_access = Sheet.objects.filter(owner_id=request.user.id).order_by('-updated_at')[
                        :6]
         root_folder = Folder.objects.get(pk=1)
-        courses = Course.objects.filter(user_id=request.user.id, folder_id=1)
-        folders = Folder.objects.filter(parent_id=1, user_id=request.user.id)  # We remove the root folder
+        courses = Course.objects.filter(owner_id=request.user.id, folder_id=1)
+        folders = Folder.objects.filter(parent_id=1, owner_id=request.user.id)  # We remove the root folder
         # sheets libres # les course elements n'ont pas de dossier parent
-        free_sheets = Sheet.objects.filter(folder=1, user_id=request.user.id)
-        file_items = FileItem.objects.filter(folder=1, user_id=request.user.id)
+        free_sheets = Sheet.objects.filter(folder=1, owner_id=request.user.id)
+        file_items = FileItem.objects.filter(folder=1, owner_id=request.user.id)
         return render(request, 'pages/welcome.html', {
             'quick_access': quick_access,
             'folder': root_folder,
@@ -53,16 +53,38 @@ def welcome(request):
     return redirect('/login')
 
 
+def view_shared_with_me(request):
+    if request.user.is_authenticated:
+        shared_with_me = SharedItem.shared_with(request.user)
+        # return HttpResponse(str(shared_with_me[0].type()))
+        #courses = [item for item in shared_with_me if item.type() == 'Course']
+        #folders = [item for item in shared_with_me if item.type() == 'Folder']
+        #folders = Folder.objects.filter(parent_id=1, user_id=request.user.id)  # We remove the root folder
+        # sheets libres # les course elements n'ont pas de dossier parent
+        sheets = [item for item in shared_with_me if item.type() == 'Sheet']
+        file_items = [item for item in shared_with_me if item.type() == 'FileItem']
+        return render(request, 'pages/shared_with_me.html', {
+            #'courses': courses,
+            #'sub_folders': folders,
+            'sheets': sheets,
+            'file_items': file_items
+        })
+    return redirect('/login')
+
+
 def view_course(request, id):
     course = Course.objects.get(pk=id)
+    #UserItemLog.save_log(UserItemLog.VIEWED, user=request.user, item=course)
     return render(request, 'pages/course.html', {'course': course})
 
 
 def view_course_element(request, course_id, part_sequence, element_sequence):
     course = Course.objects.get(pk=course_id)
+    #UserItemLog.save_log(UserItemLog.VIEWED, user=request.user, item=course)
     course_part = course.coursepart_set.all()[part_sequence - 1]
     try:
         course_element = course_part.courseelement_set.all()[element_sequence - 1]
+        #UserItemLog.save_log(UserItemLog.VIEWED, user=request.user, item=course_element)
         return render(request, 'pages/course_element.html', {'course_element': course_element})
     except IndexError:
         return redirect('/course/' + str(course.id))
@@ -88,8 +110,7 @@ def view_folder_editor(request, id, sheet_id):
     folder = Folder.objects.get(pk=id)
     file_items = FileItem.objects.filter(folder=id)
     return render(request, 'pages/folder_editor.html',
-                  {'folder': folder, 'active_sheet': active_sheet, 'courses': courses, 'sheets': sheets, 'edit_mode': False,
-                   'file_items': file_items})
+                  {'folder': folder, 'active_sheet': active_sheet, 'courses': courses, 'sheets': sheets, 'file_items': file_items})
 
 
 def convert_folder_to_course(request, id):
@@ -100,7 +121,7 @@ def convert_folder_to_course(request, id):
 
 def view_sheet(request, id):
     sheet = Sheet.objects.get(pk=id)
-    return render(request, 'pages/sheet.html', {'sheet': sheet, 'edit_mode': False})
+    return render(request, 'pages/sheet.html', {'sheet': sheet})
 
 
 def save_cell(request, id):
@@ -115,7 +136,7 @@ def save_cell(request, id):
         video_cell.sequence = cell_dict['sequence']
         video_cell.title = cell_dict['title']
         video_cell.scale = cell_dict['scale']
-        video_cell.video = cell_dict['video']
+        video_cell.url = cell_dict['url']
         video_cell.save()
     elif cell_type == 'IMAGE':
         image_cell = ImageCell()
@@ -123,14 +144,14 @@ def save_cell(request, id):
         image_cell.sequence = cell_dict['sequence']
         image_cell.title = cell_dict['title']
         image_cell.scale = cell_dict['scale']
-        image_cell.image = cell_dict['image']
+        image_cell.url = cell_dict['url']
         image_cell.save()
     elif cell_type == 'AUDIO':
         audio_cell = AudioCell()
         audio_cell.sheet = sheet
         audio_cell.sequence = cell_dict['sequence']
         audio_cell.title = cell_dict['title']
-        audio_cell.audio = cell_dict['audio']
+        audio_cell.url = cell_dict['url']
         audio_cell.save()
     elif cell_type == 'MARKDOWN':
         markdown_cell = MarkdownCell()
@@ -142,7 +163,7 @@ def save_cell(request, id):
         youtube_cell = YoutubeCell()
         youtube_cell.sheet = sheet
         youtube_cell.sequence = cell_dict['sequence']
-        youtube_cell.youtube = cell_dict['youtube']
+        youtube_cell.url = cell_dict['url']
         youtube_cell.title = cell_dict['title']
         youtube_cell.scale = cell_dict['scale']
         youtube_cell.save()
@@ -151,29 +172,29 @@ def save_cell(request, id):
         file_cell.sheet = sheet
         file_cell.sequence = cell_dict['sequence']
         file_cell.title = cell_dict['title']
-        file_cell.file = cell_dict['file']
+        file_cell.url = cell_dict['url']
         file_cell.save()
-    elif cell_type == 'NUMERICAL_QUESTION':
-        numerical_question_cell = NumericalQuestionCell()
+    elif cell_type == 'NUMERICAL_INPUT':
+        numerical_question_cell = NumericalInputCell()
         numerical_question_cell.sheet = sheet
         numerical_question_cell.sequence = cell_dict['sequence']
         numerical_question_cell.answer = cell_dict['answer']
         numerical_question_cell.save()
-    elif cell_type == 'OPEN_ENDED_QUESTION':
-        open_ended_question_cell = OpenEndedQuestionCell()
+    elif cell_type == 'OPEN_ENDED_INPUT':
+        open_ended_question_cell = OpenEndedInputCell()
         open_ended_question_cell.sheet = sheet
         open_ended_question_cell.sequence = cell_dict['sequence']
         open_ended_question_cell.answer = cell_dict['answer']
         open_ended_question_cell.save()
-    elif cell_type == 'MULTIPLE_CHOICE_QUESTION':
-        multiple_choice_question_cell = MultipleChoiceQuestionCell()
+    elif cell_type == 'MULTIPLE_CHOICE_INPUT':
+        multiple_choice_question_cell = MultipleChoiceInputCell()
         multiple_choice_question_cell.sheet = sheet
         multiple_choice_question_cell.sequence = cell_dict['sequence']
         multiple_choice_question_cell.save()
         propositions = cell_dict['propositions']
         for proposition_dict in propositions:
             proposition = Proposition()
-            proposition.question_cell = multiple_choice_question_cell
+            proposition.input_cell = multiple_choice_question_cell
             proposition.statement = proposition_dict['statement']
             proposition.is_true = proposition_dict['isTrue']
             proposition.save()
@@ -183,8 +204,12 @@ def save_cell(request, id):
 
 def delete_item(request, id):
     item = Item.objects.get(pk=id)
-    item.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    item.owner_id = User.objects.filter(username='trash').first().id
+    item.save()
+    try:
+        item.delete()
+    finally:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def save_sheet(request, id):
@@ -201,29 +226,89 @@ def save_sheet(request, id):
 
 def delete_folder(request, id):
     folder = Folder.objects.get(pk=id)
-    folder.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    folder.owner_id = User.objects.filter(username='trash').first().id
+    folder.save()
+    try:
+        folder.delete()
+    finally:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def add_course(request, folder_id):
     course = Course()
-    course.user = request.user
+    course.owner = request.user
     course.folder_id = folder_id
     course.title = 'New Course'
     course.save()
+    return redirect('/course/edit/' + str(course.id))
 
+
+def edit_course(request, id):
+    course = Course.objects.get(pk=id)
     form = CourseForm()
-
     return render(request, 'pages/edit_course.html', {'course': course, 'form': form})
+
+
+def save_course(request, id):
+    course = None
+    old_course = Course.objects.get(pk=id)
+    folder_id = old_course.folder_id
+    if request.method == 'POST':
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            course = form.save()
+            course.owner = old_course.owner
+            course.folder_id = folder_id
+            course.save()
+            old_course.delete()
+            # TODO : if sucess redirect to course element creation
+    return redirect('course', course.id)
+
+
+def add_course_part(request, course_id):
+    course_part = CoursePart()
+    course_part.course_id = course_id
+    course_part.title = request.POST['part-title']
+    course_part.label = request.POST['part-label']
+    course_part.sequence = request.POST['part-sequence']
+    course_part.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+def add_course_element(request, course_part_id):
+    course_element = CourseElement()
+    course_element.owner = request.user
+    course_element.course_part_id = course_part_id
+    course_element.title = request.POST['element-title']
+    course_element.sequence = request.POST['element-sequence']
+    course_element.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def add_folder(request):
     folder = Folder()
-    folder.user = request.user
+    folder.owner = request.user
     folder.parent_id = request.POST['parent-id']
     folder.name = request.POST['folder-name']
     folder.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+def add_tag(request):
+    tag = Tag()
+    tag.name = request.POST['tag-name']
+    tag.save()
+    tag_dict = {'id': tag.id, 'name': tag.name}
+    return HttpResponse(json.dumps(tag_dict))
+
+
+def add_instructor(request):
+    instructor = Instructor()
+    instructor.name = request.POST['instructor-name']
+    instructor.link = request.POST['instructor-link']
+    instructor.save()
+    instructor_dict = {'id': instructor.id, 'name': instructor.name}
+    return HttpResponse(json.dumps(instructor_dict))
 
 
 def rename_folder(request, id):
@@ -251,11 +336,10 @@ def add_folder_files(request):
     folder_id = request.POST['folder-id']
     folder = Folder.objects.get(pk=folder_id)
     files = request.FILES.getlist('files')
-    user = request.user
     for file in files:
         file_item = FileItem()
         file_item.folder = folder
-        file_item.user = user
+        file_item.owner = request.user
         file_item.title = file.name
         file_item.file = file
         file_item.save()
@@ -265,7 +349,7 @@ def add_folder_files(request):
 def add_sheet(request, id):
     new_sheet = Sheet()
     new_sheet.title = "Nouveau titre"
-    new_sheet.user = request.user
+    new_sheet.owner = request.user
     folder = Folder.objects.get(pk=id)
     new_sheet.folder = folder
     new_sheet.save()
@@ -300,7 +384,8 @@ def upload(request):
 def toggle_course_element_status(request, id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     # TODO Implement this
-    # item = CourseElement.objects.get(pk=id)
+    completed_course_element_log = CompletedCourseElementLog()
+
     # item.completed = not item.completed
     # item.save()
     # return redirect(request.META.get('HTTP_REFERER'))

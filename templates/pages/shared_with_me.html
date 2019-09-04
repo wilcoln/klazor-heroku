@@ -1,0 +1,79 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %} {{ 'Shared with me' }} {% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/tiny.css' %}">
+    <link rel="stylesheet" href="{% static 'css/folder.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% comment %}{% if courses.all.count %}
+            <hr>
+            <div class="course-container row">
+                <div class="col-12">
+                    <h1> Cours
+                        <small>({{ courses.all.count }})</small>
+                    </h1>
+                </div>
+                {% for course in courses %}
+                    <div class="col-md-4">
+                        {% include 'includes/components/tiny/tiny_course.html' with course=course %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if sub_folders.all.count %}
+            <hr>
+            <div class="folder-container row">
+                <div class="col-12">
+                    <h1> Dossiers
+                        <small>({{ sub_folders.all.count|default:0 }})</small>
+                    </h1>
+                </div>
+
+                {% for folder in  sub_folders %}
+                    <div class="col-lg-2 col-md-3">
+                        {% include 'includes/components/tiny/tiny_file.html' with folder=folder %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}{% endcomment %}
+
+        {% if sheets|length %}
+            <hr>
+            <div class="sheet-container  row">
+                <div class="col-12">
+                    <h1> Feuilles
+                        <small>({{ sheets|length|default:0 }})</small></h1>
+                </div>
+                {% for sheet in  sheets %}
+                    <div class="col-lg-2 col-md-3">
+                        {% include 'includes/components/tiny/shared/tiny_sheet.html' %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if file_items|length %}
+            <hr>
+            <div class="file-container  row">
+                <div class="col-12">
+                    <h1> Fichiers
+                        <small>({{ file_items|length|default:0 }})</small>
+                    </h1>
+                </div>
+                {% for file_item in file_items %}
+                    <div class="col-lg-3 col-md-4">
+                        {% include 'includes/components/tiny/shared/tiny_file.html' with file_item=file_item %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'js-cookie/src/js.cookie.js' %}"></script>
+    <script src="{% static 'axios/dist/axios.min.js' %}"></script>
+    <script src="{% static 'js/tiny.js' %}"></script>
+    <script src="{% static 'js/folder.js' %}"></script>
+{% endblock %}

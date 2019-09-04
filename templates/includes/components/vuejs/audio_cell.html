@@ -3,9 +3,9 @@
         <div class="col-11">
             <figure class="figure">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <label> Audio url : </label><input v-bind:id="'input-' + cell.id" type="text" v-model="cell.audio">
+                    <label> Audio url : </label><input v-bind:id="'input-' + cell.id" type="text" v-model="cell.url">
                     <audio controls>
-                        <source v-bind:src="cell.audio" type="audio/mp3">
+                        <source v-bind:src="cell.url" type="audio/mp3">
                     </audio>
                 </div>
                 <figcaption
@@ -19,7 +19,7 @@
     <div v-else v-on:dblclick="toggleMode" class="text-center">
         <figure class="figure">
             <audio controls>
-                <source v-bind:src="cell.audio" type="audio/mp3">
+                <source v-bind:src="cell.url" type="audio/mp3">
             </audio>
             <figcaption
                     class="figure-caption" v-text="cell.title">

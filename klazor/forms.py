@@ -1,8 +1,8 @@
-from django.forms import ModelForm
+from django import forms
 from klazor.models import *
 
 
-class CourseForm(ModelForm):
+class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ['title', 'topic_set', 'instructor_set', 'year']
+        fields = ['title', 'tag_set', 'instructor_set', 'release_date']

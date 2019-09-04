@@ -152,14 +152,14 @@
                     return 'fa-file-powerpoint-o'
                 else if (['xls', 'xlsx', 'csv', 'xlr', 'ods'].includes(ext))
                     return 'fa-file-excel-o'
-                else if (['htm', 'html', 'xhtml', 'xml'].includes(ext))
+                else if (['htm', 'html', 'xhtml', 'xml', 'java', 'py', 'c', 'cpp'].includes(ext))
                     return 'fa-file-code-o'
                 else if (['7z', 'arj', 'rar', 'deb', 'pkg', 'rpm', 'tar.gz', 'z', 'zip'].includes(ext))
                     return 'fa-file-archive-o'
                 else if (['mp4', 'mkv', 'avi', 'mov', 'flv', '3gp', 'wmv', 'vob', 'swf', 'mpg', 'mpeg', '3g2'].includes(ext))
                     return 'fa-file-movie-o'
                 else if (['mp3', 'ogg', 'webm', 'aif', 'cda', 'mpa', 'wav', 'wma', 'wpl'].includes(ext))
-                    return 'fa-file-movie-o'
+                    return 'fa-file-audio-o'
                 else
                     return 'fa-file-o'
             }
@@ -177,8 +177,8 @@
         },
     })
 
-    Vue.component('numerical-question-cell', {
-        template: "#numerical-question-cell",
+    Vue.component('numerical-input-cell', {
+        template: "#numerical-input-cell",
         props: ['cell', 'editable'],
         methods: {
             toggleMode: function () {
@@ -188,8 +188,8 @@
         },
     })
 
-    Vue.component('open-ended-question-cell', {
-        template: "#open-ended-question-cell",
+    Vue.component('open-ended-input-cell', {
+        template: "#open-ended-input-cell",
         props: ['cell', 'editable'],
         methods: {
             toggleMode: function () {
@@ -199,8 +199,8 @@
         },
     })
 
-    Vue.component('multiple-choice-question-cell', {
-        template: "#multiple-choice-question-cell",
+    Vue.component('multiple-choice-input-cell', {
+        template: "#multiple-choice-input-cell",
         props: ['cell', 'editable'],
         methods: {
             toggleMode: function () {
@@ -222,7 +222,7 @@
         data: { // Represents the sheet as described by the Sheet class
             title: `{{ sheet.title|safe}}`, // sheets title
             cells: [],
-            editMode: {{ edit_mode | lower }},
+            editMode: {% if user.id == sheet.owner.id %} true {% else %} false {% endif %},
             saved: false,
             nbCellsSaved: 0,
             autosave: false,
@@ -266,21 +266,20 @@
                 let fileCell = new FileCell(this.lastInsertedId + 1, '')
                 this.cells.push(fileCell)
             },
-            addQuestionCell(typeIndex) {
-                let questionCell = null
+            addInputCell(typeIndex) {
+                let inputCell = null
                 switch (typeIndex) {
                     case 1: // MCQ
-                        questionCell = new MultipleChoiceQuestionCell(this.lastInsertedId + 1)
+                        inputCell = new MultipleChoiceInputCell(this.lastInsertedId + 1)
                         break;
                     case 2: // NQ
-                        questionCell = new NumericalQuestionCell(this.lastInsertedId + 1, 0)
+                        inputCell = new NumericalInputCell(this.lastInsertedId + 1, 0)
                         break;
                     case 3: // OEQ
-                        questionCell = new OpenEndedQuestionCell(this.lastInsertedId + 1, '')
+                        inputCell = new OpenEndedInputCell(this.lastInsertedId + 1, '')
                         break;
                 }
-                console.log(questionCell)
-                this.cells.push(questionCell)
+                this.cells.push(inputCell)
             },
             moveCell(id, shift) {
                 let cell = this.cells.filter((cell) => {
@@ -311,7 +310,7 @@
                     {
                         headers: {
                             'X-CSRFToken': csrftoken,
-                            'cell-Type': "text/plain"
+                            'Content-Type': "text/plain"
                         }
                     }
                 ).then((response) => {
@@ -346,12 +345,12 @@
                                 lightCell.text = lightCell.text.replace(/`/g, '\\`') // escape for markdown monospace syntaxe
                             } else if (cell instanceof FileCell) {
                                 lightCell.type = 'FILE'
-                            } else if (cell instanceof NumericalQuestionCell) {
-                                lightCell.type = 'NUMERICAL_QUESTION'
-                            } else if (cell instanceof OpenEndedQuestionCell) {
-                                lightCell.type = 'OPEN_ENDED_QUESTION'
-                            } else if (cell instanceof MultipleChoiceQuestionCell) {
-                                lightCell.type = 'MULTIPLE_CHOICE_QUESTION'
+                            } else if (cell instanceof NumericalInputCell) {
+                                lightCell.type = 'NUMERICAL_INPUT'
+                            } else if (cell instanceof OpenEndedInputCell) {
+                                lightCell.type = 'OPEN_ENDED_INPUT'
+                            } else if (cell instanceof MultipleChoiceInputCell) {
+                                lightCell.type = 'MULTIPLE_CHOICE_INPUT'
                             }
                             console.log(" saving cell ...")
                             let lightCellJson = JSON.stringify(lightCell)
@@ -364,7 +363,7 @@
                                 },
                                 headers: {
                                     "X-CSRFToken": csrftoken,
-                                    "cell-type": "application/json"
+                                    "'Content-Type": "application/json"
                                 }
                             }).then((response) => {
                                 console.log("1 cell saved !")
@@ -415,31 +414,31 @@
             {% for cell in sheet.cell_set.all  %}
                 counter = {{ forloop.counter }}
                     {% if cell.videocell %}
-                        this.cells.push(new VideoCell(counter, `{{ cell.videocell.title }}`, `{{ cell.videocell.video }}`, {{ cell.videocell.scale }}))
+                        this.cells.push(new VideoCell(counter, `{{ cell.videocell.title }}`, `{{ cell.videocell.url }}`, {{ cell.videocell.scale }}))
                     {% elif cell.youtubecell %}
-                        this.cells.push(new YoutubeCell(counter, `{{ cell.youtubecell.title }}`, `{{ cell.youtubecell.youtube}}`, {{ cell.youtubecell.scale }}))
+                        this.cells.push(new YoutubeCell(counter, `{{ cell.youtubecell.title }}`, `{{ cell.youtubecell.url}}`, {{ cell.youtubecell.scale }}))
                     {% elif cell.audiocell %}
-                        this.cells.push(new AudioCell(counter, `{{ cell.audiocell.title }}`, `{{ cell.audiocell.audio}}`))
+                        this.cells.push(new AudioCell(counter, `{{ cell.audiocell.title }}`, `{{ cell.audiocell.url}}`))
                     {% elif cell.imagecell %}
-                        this.cells.push(new ImageCell(counter, `{{ cell.imagecell.title }}`, `{{ cell.imagecell.image }}`, {{ cell.imagecell.scale }}))
+                        this.cells.push(new ImageCell(counter, `{{ cell.imagecell.title }}`, `{{ cell.imagecell.url }}`, {{ cell.imagecell.scale }}))
                     {% elif cell.markdowncell %}
                         text = `{{ cell.markdowncell.text|safe }}`
                         text = text.replace(/\\\\/g, '\\\\') // escape backslash for mathjax compatibility
                         this.cells.push(new MarkdownCell(counter, text))
                     {% elif cell.filecell %}
-                        this.cells.push(new FileCell(counter, `{{ cell.filecell.title }}`, `{{ cell.filecell.file}}`))
-                    {% elif cell.multiplechoicequestioncell %}
-                        let questionCell = new MultipleChoiceQuestionCell(counter)
-                        questionCell.nbPropositions = 0
-                        {% for proposition in cell.multiplechoicequestioncell.proposition_set.all %}
-                            questionCell.addProposition(`{{ proposition.statement }}`, {{ proposition.is_true | lower }})
-                            questionCell.nbPropositions++
+                        this.cells.push(new FileCell(counter, `{{ cell.filecell.title }}`, `{{ cell.filecell.url}}`))
+                    {% elif cell.multiplechoiceinputcell %}
+                        let inputCell = new MultipleChoiceInputCell(counter)
+                        inputCell.nbPropositions = 0
+                        {% for proposition in cell.multiplechoiceinputcell.proposition_set.all %}
+                            inputCell.addProposition(`{{ proposition.statement }}`, {{ proposition.is_true | lower }})
+                            inputCell.nbPropositions++
                         {% endfor %}
-                        this.cells.push(questionCell)
-                    {% elif cell.numericalquestioncell %}
-                        this.cells.push(new NumericalQuestionCell(counter, `{{ cell.numericalquestioncell.answer}}`))
-                    {% elif cell.openendedquestioncell %}
-                        this.cells.push(new OpenEndedQuestionCell(counter, `{{ cell.openendedquestioncell.answer}}`))
+                        this.cells.push(inputCell)
+                    {% elif cell.numericalinputcell %}
+                        this.cells.push(new NumericalInputCell(counter, `{{ cell.numericalinputcell.answer}}`))
+                    {% elif cell.openendedinputcell %}
+                        this.cells.push(new OpenEndedInputCell(counter, `{{ cell.openendedinputcell.answer}}`))
                     {% endif %}
             {% endfor %}
         }

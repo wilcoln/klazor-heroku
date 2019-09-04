@@ -1,0 +1,37 @@
+<!-- Modal -->
+<div class="modal fade" id="addCoursePartModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form action="{% url 'add-course-part' course.id %}" method="post">
+        {% csrf_token %}
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nouvel Partie</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="part-label">Label</label>
+                        {% comment %}TODO: Ajouter un model Course Label et utliser un odelcoice pour remplir ce champ, avec n bouton d'ajout d label en cas de ouveau label{% endcomment %}
+                        <input type="text" class="form-control" id="part-label" name="part-label" placeholder="ex.: Semaine, Chapitre...">
+                    </div>
+                    <div class="form-group">
+                        <label for="part-title">Titre</label>
+                        <input type="text" class="form-control" id="part-title" name="part-title" placeholder="ex.: Arithmétique">
+                    </div>
+                    <div class="form-group">
+                        <label for="part-sequence">Sequence</label>
+                        <input type="number" min="1" class="form-control" name="part-sequence" id="part-sequence">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

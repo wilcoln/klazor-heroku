@@ -39,21 +39,21 @@
                                    v-on:down="moveCell($event,1)"
                                    v-bind:editable="editMode" v-bind:cell="cell"
                                    v-on:delete="deleteCell($event)"></file-cell>
-                    <numerical-question-cell v-else-if="cell instanceof NumericalQuestionCell"
+                    <numerical-input-cell v-else-if="cell instanceof NumericalInputCell"
                                    v-on:up="moveCell($event,-1)"
                                    v-on:down="moveCell($event,1)"
                                    v-bind:editable="editMode" v-bind:cell="cell"
-                                   v-on:delete="deleteCell($event)"></numerical-question-cell>
-                    <open-ended-question-cell v-else-if="cell instanceof OpenEndedQuestionCell"
+                                   v-on:delete="deleteCell($event)"></numerical-input-cell>
+                    <open-ended-input-cell v-else-if="cell instanceof OpenEndedInputCell"
                                    v-on:up="moveCell($event,-1)"
                                    v-on:down="moveCell($event,1)"
                                    v-bind:editable="editMode" v-bind:cell="cell"
-                                   v-on:delete="deleteCell($event)"></open-ended-question-cell>
-                    <multiple-choice-question-cell v-else-if="cell instanceof MultipleChoiceQuestionCell"
+                                   v-on:delete="deleteCell($event)"></open-ended-input-cell>
+                    <multiple-choice-input-cell v-else-if="cell instanceof MultipleChoiceInputCell"
                                    v-on:up="moveCell($event,-1)"
                                    v-on:down="moveCell($event,1)"
                                    v-bind:editable="editMode" v-bind:cell="cell"
-                                   v-on:delete="deleteCell($event)"></multiple-choice-question-cell>
+                                   v-on:delete="deleteCell($event)"></multiple-choice-input-cell>
                 </div>
             </div>
         </div>

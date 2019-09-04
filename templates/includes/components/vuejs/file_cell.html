@@ -12,11 +12,11 @@
         </div>
         {% include 'includes/components/menus/cell_edit_menu.html' %}
     </div>
-    <div v-else v-on:dblclick="toggleMode" class="text-center">
+    <div v-else v-on:dblclick="toggleMode">
         <figure class="figure">
             {% verbatim %}
             <div>
-                <a :href="cell.url"><i class="file fa" :class="cell.url | iconclass"></i> {{ cell.title }}</a>
+                <a :href="cell.file"><i class="file fa" :class="cell.url | iconclass"></i> {{ cell.title }}</a>
             </div>
             {% endverbatim %}
         </figure>

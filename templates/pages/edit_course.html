@@ -1,12 +1,91 @@
 {% extends 'layouts/base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class="container">
-<h1> Create Course </h1>
-<form method="post">
-    {% csrf_token %}
-    {{form | crispy}}
-    <button class="btn btn-success float-right" type="submit">Save</button>
-  </form>
-</div>
+    <div class="container">
+        <h1> Edit Course </h1>
+        {% include 'includes/components/modals/add_tag.html' %}
+        {% include 'includes/components/modals/add_instructor.html' %}
+        <form action="{% url 'save-course' course.id %}" method="post">
+            {% csrf_token %}
+            {{ form | crispy }}
+            <button class="btn btn-success float-right" type="submit">Save and Continue <i
+                    class="fa fa-arrow-right"></i></button>
+        </form>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'axios/dist/axios.min.js' %}"></script>
+    <script src="{% static 'js-cookie/src/js.cookie.js' %}"></script>
+    <script src="{% static 'js/utils.js' %}"></script>
+    <script>
+        // Add addTagBtn
+        addTagBtnString = `<a href="#addTagModal" class="btn p-0" data-toggle="modal" data-target="#addTagModal"> <i class="fa fa-plus text-success"></i> </a>`
+        addTagBtn = htmlToElement(addTagBtnString)
+        document.querySelector('#div_id_tag_set').firstElementChild.append(addTagBtn)
+
+        // Add addInstructorBtn
+        addInstructorBtnString = `    <a href="#addInstructorModal" class="btn p-0" data-toggle="modal" data-target="#addInstructorModal"> <i class="fa fa-plus text-success"></i> </a>`
+        addInstructorBtn = htmlToElement(addInstructorBtnString)
+        document.querySelector('#div_id_instructor_set').firstElementChild.append(addInstructorBtn)
+
+        function saveTag() {
+            let csrftoken = Cookies.get('csrftoken')
+            let tagFormData = new FormData()
+            let tagName = document.querySelector('#tag-name').value
+            tagFormData.set('tag-name', tagName)
+            axios({
+                method: 'post',
+                url: '/tag/add/',
+                data: tagFormData,
+                headers: {
+                    "X-CSRFToken": csrftoken,
+                    "Content-Type": "multipart/form-data"
+                }
+            }).then((response) => {
+
+                {#document.querySelector('#id_tag_set').firstElementChild.append(addTagBtn)#}
+                console.log(response)
+                let savedTagId = response.data['id']
+                let savedTagName = response.data['name']
+                let tagOptionString = `<option value="${savedTagId}" selected> ${savedTagName}</option>`
+                let tagOption = htmlToElement(tagOptionString)
+                document.querySelector('#id_tag_set').append(tagOption)
+                $('#addTagModal').modal('hide')
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+
+        function saveInstructor() {
+            let csrftoken = Cookies.get('csrftoken')
+            let instructorFormData = new FormData()
+            let instructorName = document.querySelector('#instructor-name').value
+            let instructorLink = document.querySelector('#instructor-link').value
+            instructorFormData.set('instructor-name', instructorName)
+            instructorFormData.set('instructor-link', instructorLink)
+            axios({
+                method: 'post',
+                url: '/instructor/add/',
+                data: instructorFormData,
+                headers: {
+                    "X-CSRFToken": csrftoken,
+                    "Content-Type": "multipart/form-data"
+                }
+            }).then((response) => {
+
+                {#document.querySelector('#id_instructor_set').firstElementChild.append(addInstructorBtn)#}
+                console.log(response)
+                let savedInstructorId = response.data['id']
+                let savedInstructorName = response.data['name']
+                let instructorOptionString = `<option value="${savedInstructorId}" selected> ${savedInstructorName}</option>`
+                let instructorOption = htmlToElement(instructorOptionString)
+                document.querySelector('#id_instructor_set').append(instructorOption)
+                $('#addInstructorModal').modal('hide')
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+
+    </script>
 {% endblock %}

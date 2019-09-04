@@ -1,0 +1,22 @@
+<template id="multiple-choice-input-cell">
+    <div class="row cell-editable" v-if="editable && cell.editMode">
+        <div class="col-11">
+            <label>N° Of Props</label><input type="number" v-model="cell.nbPropositions"
+                                             v-on:input="createBlankPropositions">
+            <div v-for="proposition in cell.propositions" v-bind:key="proposition.id">
+                <input type="checkbox" v-model="proposition.isTrue">
+                <label><input v-model="proposition.statement"></label>
+            </div>
+            <button class="btn btn-secondary" v-on:click="toggleMode">Finish</button>
+        </div>
+        {% include 'includes/components/menus/cell_edit_menu.html' %}
+    </div>
+    <div class="row" v-on:click="toggleMode" v-else>
+        <div class="col-12">
+            <div v-for="proposition in cell.propositions">
+                <input :type="cell.getNbChecked() != 1 ? 'checkbox': 'radio'">
+                <label v-text="proposition.statement"></label>
+            </div>
+        </div>
+    </div>
+</template>

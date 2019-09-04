@@ -7,9 +7,16 @@
                 </h1>
             </div>
             {% for sheet in quick_access %}
-                <div class="col-lg-2  col-md-3">
-                    {% include 'includes/components/tiny/tiny_recent_sheet.html' with sheet=sheet %}
-                </div>
+                {% if sheet.folder %}
+                    <div class="col-lg-2  col-md-3">
+                        {% include 'includes/components/tiny/tiny_recent_sheet.html' with sheet=sheet %}
+                    </div>
+                {% else %}
+                    <div class="col-lg-2  col-md-3">
+                        {% include 'includes/components/tiny/tiny_recent_course_element.html' with course_element=sheet.courseelement %}
+                    </div>
+                {% endif %}
+
             {% endfor %}
         </div>
 {% endblock %}

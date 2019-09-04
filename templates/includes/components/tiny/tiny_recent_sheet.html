@@ -1,5 +1,7 @@
 {% extends 'includes/components/tiny/tiny_sheet.html' %}
 {% block other_info %}
-    <br>
+    <small><a href="{% url 'folder' sheet.folder.id %}">
+            <div class="sheet-location-title"> {% if sheet.folder.id == 1 %}<i class="fa fa-home"></i> {% else %}<i class="fa fa-folder"></i>{% endif %} {{ sheet.folder.name}}</div>
+        </a></small>
     <span class="recent-info">{% include 'includes/components/tiny/created_updated.html' with obj=sheet %}</span>
 {% endblock %}

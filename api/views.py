@@ -4,12 +4,12 @@ from api.permissions import *
 # Create your views here.
 
 
-class TopicViewSet(viewsets.ModelViewSet):
+class TagViewSet(viewsets.ModelViewSet):
     """
         API endpoint that allows topics to be viewed or edited.
         """
-    queryset = Topic.objects.all()
-    serializer_class = TopicSerializer
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
 
 
 class InstructorViewSet(viewsets.ModelViewSet):
@@ -30,7 +30,7 @@ class SheetViewSet(viewsets.ModelViewSet):
     serializer_class = SheetSerializer
 
     def get_queryset(self):
-        return Sheet.objects.all().filter(user=self.request.user)
+        return Sheet.objects.all().filter(owner=self.request.user)
 
 
 class CellViewSet(viewsets.ModelViewSet):
@@ -52,7 +52,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
 
     def get_queryset(self):
-        return Course.objects.all().filter(user=self.request.user)
+        return Course.objects.all().filter(owner=self.request.user)
 
 
 class CoursePartViewSet(viewsets.ModelViewSet):

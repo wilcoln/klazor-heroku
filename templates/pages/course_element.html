@@ -16,14 +16,15 @@
             </div>
             <div class="col-md-9">
                 {% include 'includes/components/sheet.html' with sheet=course_element %}
-                <form action="{% url 'check-course-element' course_element.id %}" method="post">
+               {% comment %} <form action="{% url 'check-course-element' course_element.id %}" method="post">
+               TODO : Figure out how to deal with the check course element: mark as completed
                     {% csrf_token %}
                     <button class="float-right my-3 btn {% if course_element.completed %} {{ ' btn-secondary ' }} {% else %} {{ ' btn-info ' }}{% endif %}">
                         {% if not course_element.completed %} <i class="fa fa-check"></i>
                             {{ 'Mark as completed' }} {% else %} <i class="fa fa-undo"></i>
                             {{ ' Unmark as completed ' }}{% endif %}
                     </button>
-                </form>
+                </form>{% endcomment %}
                 <nav class="my-3">
                     <ul class="pagination">
                         <li class="page-item">

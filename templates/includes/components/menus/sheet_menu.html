@@ -1,11 +1,11 @@
-{% if user.id == sheet.user.id %}
+{% if user.id == sheet.owner.id %}
     <div class="container sheet-toolbar d-flex align-items-center">
         <!-- Rounded switch -->
         <label class="switch mr-3">
-            <input type="checkbox" v-on:click="toggleMode">
+            <input type="checkbox" v-on:click="toggleMode" checked>
             <span class="slider round"></span>
         </label>
-        <div class="mode"><i class="fa" v-bind:class="{ 'fa-eye': !editMode, 'fa-edit':editMode}" ></i></div>
+        <div class="mode"><i class="fa" v-bind:class="{'fa-eye': !editMode, 'fa-edit':editMode}" ></i></div>
         <div class="mx-2 pb-3 text-muted" v-bind:style="{display: !editMode ? 'inline-block':'none' }">{% include 'includes/infos/last_modified.html' with obj=sheet %}</div>
         <div class="edit-menu justify-cell-around" v-bind:style="{display: editMode ? 'flex':'none' }">
             <div class="separator"></div>

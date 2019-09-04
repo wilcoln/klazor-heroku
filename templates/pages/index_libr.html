@@ -1,0 +1,179 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/libr.css' %}">
+    {% block style %}{% endblock %}
+    <title>{% block title %} Document {% endblock %}</title>
+</head>
+<body>
+<nav class="navbar mb-2 justify-content-start sticky-top navbar-expand-lg navbar-dark bg-success">
+    <div class="ml-auto">
+        {% if user.is_authenticated %}
+            <div class="dropdown show">
+                <a class="text-white dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ user.username }}
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </div>
+        {% else %}
+            <a class="text-white" href="{% url 'login' %}">
+                Login
+            </a>&nbsp;
+            <a class="text-white" href="{% url 'register' %}">
+                Register
+            </a>
+        {% endif %}
+    </div>
+</nav>
+<div class="bg-light p-3" style="border-bottom: 1px solid #e4e4e4">
+    <input type="text" placeholder="Rechercher..." aria-label="pattern" class="search m-auto form-control w-50">
+</div>
+<div class="px-5">
+    <div class="row pt-2">
+        <div class="col-2">
+            <h1>Filtres</h1>
+            <ul class="list-group border-0">
+                <li class="list-group-item bg-secondary d-flex text-white justify-content-between align-items-center">
+                    Types
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
+                        <label class="custom-control-label" for="customControlAutosizing">Tout</label>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
+                        <label class="custom-control-label" for="customControlAutosizing">Livres</label>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
+                        <label class="custom-control-label" for="customControlAutosizing">Audio</label>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
+                        <label class="custom-control-label" for="customControlAutosizing">Document</label>
+                    </div>
+                </li>
+            </ul>
+            <hr>
+            <ul class="list-group border-0">
+                <li class="list-group-item bg-light d-flex justify-content-between align-items-center">
+                    Langues
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
+                        <label class="custom-control-label" for="customControlAutosizing">Tout</label>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
+                        <label class="custom-control-label" for="customControlAutosizing">Anglais</label>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
+                        <label class="custom-control-label" for="customControlAutosizing">Français</label>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="dropdown">
+                        <button class="btn bg-transparent p-0 dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Autre
+                        </button>
+                        <ul class="p-0 border-0 dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
+                                    <label class="custom-control-label" for="customControlAutosizing">Spanish</label>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
+                                    <label class="custom-control-label" for="customControlAutosizing">Finish</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <hr>
+            <ul class="list-group border-0">
+                <li class="list-group-item d-flex bg-info text-white justify-content-between align-items-center">
+                    Etiquettes
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="input-group mb-3">
+                        <input list="tags" class="form-control" required placeholder="Etiquette...">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-success" type="button">&plus;</button>
+                        </div>
+                    </div>
+                    <datalist id="tags">
+                        {% for tag in tags.all %}
+                            <option value="{{ tag.name }}"></option>
+                        {% endfor %}
+                    </datalist>
+                </li>
+                <li class="list-group-item">
+                    <div>
+                        <span class="badge badge-pill badge-primary"> Etiquette <i class="fa fa-close"></i></span>
+                        <span class="badge badge-pill badge-primary"> Etiquette <i class="fa fa-close"></i></span>
+                        <span class="badge badge-pill badge-primary"> sport <i class="fa fa-close"></i></span>
+                        <span class="badge badge-pill badge-primary"> Etiquette <i class="fa fa-close"></i></span>
+                        <span class="badge badge-pill badge-primary"> Etiquette <i class="fa fa-close"></i></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-10">
+            <h1>Résultats</h1>
+           <div class="row">
+               {% for i in '0123'|make_list %}
+               <div class="mb-3 col-sm-6 col-md-4 col-xl-2">
+                   {% include 'libr/includes/textbook_component.html' %}
+               </div>
+               {% endfor %}
+               {% for i in '0123'|make_list %}
+               <div class="mb-3 col-sm-6 col-md-4 col-xl-2">
+                   {% include 'libr/includes/audio_book_component.html' %}
+               </div>
+               {% endfor %}
+               {% for i in '0123'|make_list %}
+               <div class="mb-3 col-sm-6 col-md-4 col-xl-2">
+                   {% include 'libr/includes/document_file_component.html' %}
+               </div>
+               {% endfor %}
+           </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'popper.js/dist/umd/popper.min.js' %}"></script>
+<script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/contextmenu.js' %}"></script>
+</body>
+</html>

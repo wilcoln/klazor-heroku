@@ -3,21 +3,23 @@
 {% block title %} {{ course.title }} {% endblock %}
 {% block style %} <link rel="stylesheet" href="{% static 'css/course.css' %}"> {% endblock %}
 {% block content %}
+    {% include 'includes/components/modals/add_course_part.html' %}
+    {% include 'includes/components/modals/add_course_element.html' %}
     <div class="base-container">
     <div class="row">
         <div class="col-md-3">
-        {% include 'includes/components/navs/course_nav.html' with course=course%}
+        {% include 'includes/components/navs/course_nav.html' with course=course %}
         </div>
         <div class="col-md-9">
             <h1 class="text-center">{{ course.title}}</h1>
             <hr>
             <div class="container">
                 <section>
-                    <h2 class="text-muted">Contenu du cours </h2><br>
+                    <h2 class="text-muted">Contenu du cours <button class="float-right btn p-0" data-toggle="modal" data-target="#addCoursePartModal"><i class="text-secondary fa fa-plus"></i> Partie</button></h2><br>
                     {% for coursepart in course.coursepart_set.all  %}
                         <div class="row">
                             <h3 class="col-md-2">{{ coursepart.label }} {{ coursepart.sequence }} :</h3>
-                            <h3 class="col-md-10">{{ coursepart.title }}</h3>
+                            <h3 class="col-md-10">{{ coursepart.title }} <button class="float-right btn p-0" data-toggle="modal" data-target="#addCourseElementModal" onmouseover="changeAddCourseElementModal({{ coursepart.id }})"><i class="text-primary fa fa-plus"></i> Elément</button> </h3>
                         </div>
                         <ul class="row">
                             {% for courseelement in coursepart.courseelement_set.all %}
@@ -34,4 +36,11 @@
         </div>
         </div>
     </div>
+{% endblock %}
+{% block script %}
+    <script>
+        function changeAddCourseElementModal(id){
+            document.querySelector('#addCourseElementForm').action = '/course-part/' + id + '/add-element/'
+        }
+    </script>
 {% endblock %}

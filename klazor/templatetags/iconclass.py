@@ -26,6 +26,6 @@ def iconclass(filename):
     elif ext in ['mp4', 'mkv', 'avi', 'mov', 'flv', '3gp', 'wmv', 'vob', 'swf', 'mpg', 'mpeg', '3g2']:
         return 'fa-file-movie-o'
     elif ext in ['mp3', 'ogg', 'webm', 'aif', 'cda', 'mpa', 'wav', 'wma', 'wpl']:
-        return 'fa-file-movie-o'
+        return 'fa-file-audio-o'
     else:
         return 'fa-file-o'
