@@ -43,7 +43,7 @@
   "dependencies": {},
   "description": "Tiny milisecond conversion utility",
   "devDependencies": {
-    "eslint": "3.19.0",
+    "eslint": "6.5.1",
     "expect.js": "0.3.1",
     "husky": "0.13.3",
     "lint-staged": "3.4.1",
