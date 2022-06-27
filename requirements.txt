@@ -13,4 +13,4 @@ django-cors-headers==3.0.2
 django-crispy-forms==1.7.2
 djangorestframework==3.9.4
 django-polymorphic==2.0.3
-reportlab==3.5.23
+reportlab==3.5.55
